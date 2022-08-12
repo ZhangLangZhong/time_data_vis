@@ -1,7 +1,7 @@
 import React, { useEffect, useState, createContext} from 'react'
 import './TopInfor.css'
 import axios from 'axios'
-import Pubsub from 'pubsub-js'
+import PubSub from 'pubsub-js'
 
 
 export default function TopInfor() {
@@ -39,7 +39,7 @@ export default function TopInfor() {
                 every.date = new Date(every.date)
                 every.value = +every.value;
             })
-
+            PubSub.publish("initialTimeData",packages)
         })
     }, [])
 

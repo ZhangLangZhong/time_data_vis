@@ -54,7 +54,7 @@ def get_brush_extent_data():
                 value = {"source":dataSource[i],"target":dataTarget[i]}
                 result['links'].append(value)
             souTar = result['links']
-    # g_b = g_b + 1
+    g_b = g_b + 1
     # print(result)
     return jsonify(result)
 
