@@ -3,6 +3,7 @@ import axios from 'axios'
 // import FormatDateTime from '../../topInfor/TopInfor'
 // import { dispatch } from 'd3'
 import * as d3 from 'd3'
+import DynamicChart from '../DynamicChart/DynamicChart';
 // import '../MainLayout'
 
 const FormatDateTime = (date) => {
@@ -19,17 +20,25 @@ const FormatDateTime = (date) => {
 }
 
 const transform = (initData) => {
-    // console.log(initData)
     var copylinks =  initData.links.map(function (item) {
         return {source: item.source, target: item.target}
     })
-    // console.log(copylinks)
-
   return copylinks.filter(function (d) {
-      // console.log(d.source != d.target)
-      //true
        return d.source != d.target;
     })
+}
+
+const unique = (arr)=> {
+    var result = [],
+        hash = {};
+    for (var i = 0, elem;
+         (elem = arr[i]) != null; i++) {
+        if (!hash[elem]) {
+            result.push(elem);
+            hash[elem] = true;
+        }
+    }
+    return result;
 }
 
 function d3layout(data, width, height) {
@@ -57,13 +66,12 @@ function d3layout(data, width, height) {
                 nodeDict[item.target].push(item.source)
             }
         })
-        tmp_nodes = this.unique(tmp_nodes);
+        tmp_nodes = unique(tmp_nodes);
         index_of_nodes = d3.map();
         nodeNumber = tmp_nodes.length;
         tmp_nodes.sort(function compare(a, b) {
             return a - b
         });
-
         for (let i = 0; i !== tmp_nodes.length; ++i) {
             let node = {id: tmp_nodes[i]};
             nodes.push(node);
@@ -77,20 +85,73 @@ function d3layout(data, width, height) {
             };
             links.push(link);
         });
+        
+        let svg = d3.select('.mainLayout')
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
 
-        console.log(99999);
-        // let svg = d3.select
+        this.force = d3.layout.force()
+            .nodes(nodes)
+            .links(links)
+                // .linkDistance(0.01)
+            .size([width, height])
+        
+        this.force.start();
+        
+        var svg_links = svg.selectAll(".link")
+            .data(links)
+            .enter()
+            .append("line")
+            .attr("class", "link")
+            .attr("stroke-opacity", 0.9)
+            .attr("stroke", "gray")
+
+        var svg_nodes = svg.selectAll(".node")
+            .data(nodes)
+            .enter()
+            .append("circle")
+            .attr("class", "node")
+            .attr("r", function (d) {
+                return 2;
+            })
+            .attr("id", function (d) {
+                // console.log(d)
+                return d.id;
+            })
+            .attr("opacity", 1)
+            .attr("stroke", "red")
+            .attr("fill", "red")
+
+        this.force.on("tick", function () {
+                svg_links.attr("x1", function (d) {
+                    return d.source.x;
+                });
+                svg_links.attr("y1", function (d) {
+                    return d.source.y;
+                });
+                svg_links.attr("x2", function (d) {
+                    return d.target.x;
+                });
+                svg_links.attr("y2", function (d) {
+                    return d.target.y;
+                });
+                svg_nodes.attr("cx", function (d) {
+                    return d.x;
+                });
+                svg_nodes.attr("cy", function (d) {
+                    return d.y;
+                });
+            });
+        
+        console.log(nodes);
+        
+        return nodes
     }
 }
 
-const now_layout_type = 'incremental'
-
-export default function InitChart(props) {
-
+export default function InitChart() {
     console.log("      InitChart");
-    console.log(props);
-    // let aaa = FormatDateTime(new Date('2015-4-23 16:45'))
-    // console.log(aaa);
     const now_layout_type = 'incremental'
 
     useEffect(() => {
@@ -102,11 +163,15 @@ export default function InitChart(props) {
                 "start": FormatDateTime(new Date('2015-4-23 16:45')),
                 "end": FormatDateTime(new Date('2015-4-23 16:50'))
             }
-        }).then(initial=>{
-            let startData = transform(initial.data)
+        }).then(res=>{
+            let startData = transform(res.data)
+            let getSVG = document.getElementsByClassName('mainLayout')
+
+            let width = getSVG[0].clientWidth - 5
+            let height = getSVG[0].clientHeight - 5
             let preData = startData
-            let layout = new d3layout(startData);
-            
+            let layout = new d3layout(startData,width,height);
+            layout.draw()
         })
     }, [])
 
@@ -114,7 +179,7 @@ export default function InitChart(props) {
     return (
         
         <div>
-            initichart
+            <DynamicChart></DynamicChart>
         </div>
     )
 }
