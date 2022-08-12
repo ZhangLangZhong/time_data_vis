@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, createContext} from 'react'
 import './TopInfor.css'
 import axios from 'axios'
+import Pubsub from 'pubsub-js'
 
 
 export default function TopInfor() {
+
 
     const [currentTime, setCurrentTime] = useState(0);
 
@@ -33,8 +35,6 @@ export default function TopInfor() {
         axios.get(`http://localhost:3000/api/initial`).then(res => {
             setCurrentTime(currentTimeNow)
             const { packages } = res.data
-            // console.log(packages);
-            console.log("TopInfor+2");
             packages.forEach((every) => {
                 every.date = new Date(every.date)
                 every.value = +every.value;
@@ -48,5 +48,6 @@ export default function TopInfor() {
             <span className='title'>时序数据分析可视化系统</span>
             <span className='time'>{currentTime}</span>
         </div>
+        
     )
 }

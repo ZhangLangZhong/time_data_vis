@@ -1,23 +1,11 @@
 import React, { useEffect } from 'react'
 import axios from 'axios'
-// import FormatDateTime from '../../topInfor/TopInfor'
+import FormatDateTime from '../../topInfor/TopInfor'
 // import { dispatch } from 'd3'
 import * as d3 from 'd3'
 import DynamicChart from '../DynamicChart/DynamicChart';
 // import '../MainLayout'
 
-const FormatDateTime = (date) => {
-    let y = date.getFullYear();
-    let m = date.getMonth() + 1;
-    m = m < 10 ? ('0' + m) : m;
-    let d = date.getDate();
-    d = d < 10 ? ('0' + d) : d;
-    let h = date.getHours();
-    h = h < 10 ? ('0' + h) : h;
-    let minute = date.getMinutes();
-    minute = minute < 10 ? ('0' + minute) : minute;
-    return y + '-' + m + '-' + d + ' ' + h + ':' + minute;
-}
 
 const transform = (initData) => {
     var copylinks =  initData.links.map(function (item) {
@@ -144,13 +132,14 @@ function d3layout(data, width, height) {
                 });
             });
         
-        console.log(nodes);
+        // console.log(nodes);
         
         return nodes
     }
 }
 
-export default function InitChart() {
+export default function InitChart({FDT,NLT}) {
+
     console.log("      InitChart");
     const now_layout_type = 'incremental'
 
@@ -159,9 +148,9 @@ export default function InitChart() {
             method: 'get',
             url: 'http://localhost:3000/api/brush_extent',
             params: {
-                "layout_type": now_layout_type,
-                "start": FormatDateTime(new Date('2015-4-23 16:45')),
-                "end": FormatDateTime(new Date('2015-4-23 16:50'))
+                "layout_type": NLT,
+                "start": FDT(new Date('2015-4-23 16:45')),
+                "end": FDT(new Date('2015-4-23 16:50'))
             }
         }).then(res=>{
             let startData = transform(res.data)
@@ -179,7 +168,10 @@ export default function InitChart() {
     return (
         
         <div>
-            <DynamicChart></DynamicChart>
+            {/* <button >
+                <DynamicChart></DynamicChart>
+            </button> */}
+            {/* <DynamicChart></DynamicChart> */}
         </div>
     )
 }
