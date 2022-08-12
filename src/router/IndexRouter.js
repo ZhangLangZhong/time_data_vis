@@ -3,6 +3,7 @@ import { Route, Switch,BrowserRouter } from 'react-router-dom'
 import MainView from '../views/mainView/MainView'
 
 export default function IndexRouter() {
+    console.log("IndexRouter");
     return (
         <div>
         indexrouter....
@@ -10,13 +11,7 @@ export default function IndexRouter() {
         <BrowserRouter>
             <Switch>
                 <Route path="/" component = {MainView}/>
-                {/* <Route path="/" render={()=>{
-                    1==1?
-                    <mainView></mainView>:
-                    <Redirect to="/"/>
-                }}/> */}
-
-
+            
             </Switch>
         </BrowserRouter>
         </div>

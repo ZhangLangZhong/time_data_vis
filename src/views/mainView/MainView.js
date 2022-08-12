@@ -5,11 +5,12 @@ import TopInfor from '../../components/topInfor/TopInfor'
 
 
 export default function mainView() {
+    console.log(" mainView");
   return (
     <div>
         Mainview...
-        <MainLayout></MainLayout>
-        <TopInfor></TopInfor>
+        <MainLayout/>
+        <TopInfor/>
         <TimeLineChart></TimeLineChart>
     </div>
   )

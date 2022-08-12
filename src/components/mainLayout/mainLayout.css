@@ -1,0 +1,15 @@
+.mainLayout{
+    position: absolute;
+    top: 23px;
+    left: 18%;
+    background-color: aquamarine;
+    height: 70%;
+    width: 53%;
+}
+.playButton{
+    position: absolute;
+    top: 96.5%;
+    width: 40px;
+    height: 40px;
+    /* background-color: blue; */
+}

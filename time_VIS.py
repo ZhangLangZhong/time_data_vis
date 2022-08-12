@@ -9,6 +9,8 @@ import time
 import pandas as pd
 from glom import glom
 
+g_b = 0
+
 app = Flask(__name__)
 
 @app.route("/")
@@ -30,6 +32,7 @@ def get_brush_extent_data():
     flag = False
     result = {'nodes': [], 'links': []}
     start_time = request.args.get('start')
+    # print(start_time)
     end_time = request.args.get('end')
     path = 'files/jsonFormat/packages/'
     files = os.listdir(path)
@@ -52,6 +55,7 @@ def get_brush_extent_data():
                 result['links'].append(value)
             souTar = result['links']
     g_b = g_b + 1
+    # print(result)
     return jsonify(result)
 
 @app.route('/api/time')
