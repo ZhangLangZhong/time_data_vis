@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import FormatDateTime from '../../topInfor/TopInfor'
 // import { dispatch } from 'd3'
 import * as d3 from 'd3'
-import DynamicChart from '../DynamicChart/DynamicChart';
+import PubSub from 'pubsub-js'
+// import DynamicChart from '../DynamicChart/DynamicChart';
 // import '../MainLayout'
-
+import useSyncCallback from '../../../MyHooks/useSyncCallback';
 
 const transform = (initData) => {
     var copylinks =  initData.links.map(function (item) {
@@ -140,6 +141,8 @@ function d3layout(data, width, height) {
 
 export default function InitChart({FDT,NLT}) {
 
+    const [InitpreData,setInitpreData] = useState([])
+
     console.log("      InitChart");
     const now_layout_type = 'incremental'
 
@@ -158,11 +161,19 @@ export default function InitChart({FDT,NLT}) {
 
             let width = getSVG[0].clientWidth - 5
             let height = getSVG[0].clientHeight - 5
-            let preData = startData
+            // let preData = startData
+            setInitpreData(InitpreData=>startData)
+            funcInitpreData()
             let layout = new d3layout(startData,width,height);
             layout.draw()
         })
     }, [])
+
+
+    const funcInitpreData = useSyncCallback(() => {
+        // console.log(InitpreData);
+        PubSub.publish("preData",InitpreData)
+    })
 
 
     return (
