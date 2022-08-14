@@ -42,7 +42,7 @@ export default function DynamicChart({ FDT, NLT }) {
                 // console.log("           setInterval");
                 setnowTimeData(nowTimeData => nowTimeData + 1)
                 axiosInit()
-            }, 1200)
+            }, 2200)
             return () => clearInterval(timer)
         }
     }, [buttonOpen])

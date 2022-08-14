@@ -104,7 +104,7 @@ def HAC_CLUSTRING():
         distanceMap[str(hashTemp.get(linkSource)["id"]) + '#' + str(hashTemp.get(linkTarget)["id"])] = nodesDistance/(hashTemp.get(linkTarget)['degree']*0.5)
 
     distanceMap = sorted(distanceMap.items(), key=lambda dist: dist[1], reverse=False)
-    print(distanceMap)
+    # print(distanceMap)
     unsortedGroup = {index:1 for index in range(len(allNodes["nodes"]))}
     for key,_ in distanceMap:
         lowIndex, highIndex = int(key.split("#")[0]), int(key.split("#")[1])
@@ -171,20 +171,20 @@ def HAC_CLUSTRING():
                 point['index'] = -1 * topClusterCenterCount
         if topClusterCenterCount >= clusterCenterNumber:
             break
-    colorStore = ['or', 'og', 'ob', 'oc', 'om', 'oy', 'ok','^r', '^g', '^b', '^c', '^m', '^y', '^k','+r', '+g', '+b', '+c', '+m', '+y','pr', 'pg', 'pb', 'pc', 'pm', 'py','dr', 'dg', 'db', 'dc', 'dm', 'dy']
+    # colorStore = ['or', 'og', 'ob', 'oc', 'om', 'oy', 'ok','^r', '^g', '^b', '^c', '^m', '^y', '^k','+r', '+g', '+b', '+c', '+m', '+y','pr', 'pg', 'pb', 'pc', 'pm', 'py','dr', 'dg', 'db', 'dc', 'dm', 'dy']
 
-    plt.figure(figsize=(9, 9), dpi=80)
-    for point in allNodes['nodes']:
-        # print(point['index'])
-        if point['index'] < 0:
-            color = colorStore[-1 * point['index'] - 1]
-        else:
-            color = '+k'
-        plt.plot(point['x'],point['y'],color)
-    ax = plt.gca()
-    ax.xaxis.set_ticks_position('top')
-    ax.invert_yaxis()
-    plt.show()
+    # plt.figure(figsize=(9, 9), dpi=80)
+    # for point in allNodes['nodes']:
+    #     # print(point['index'])
+    #     if point['index'] < 0:
+    #         color = colorStore[-1 * point['index'] - 1]
+    #     else:
+    #         color = '+k'
+    #     plt.plot(point['x'],point['y'],color)
+    # ax = plt.gca()
+    # ax.xaxis.set_ticks_position('top')
+    # ax.invert_yaxis()
+    # plt.show()
     jsonAllNodes = str(allNodes)
     jsonTemp = jsonAllNodes.replace("'",'"')
     return jsonify(jsonTemp)
