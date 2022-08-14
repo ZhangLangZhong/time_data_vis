@@ -137,6 +137,10 @@ export default function DynamicChart({ FDT, NLT }) {
         age.start();//设置年龄
         var repulsion = new RepulsionAll(layoutNodes, width, height);
         repulsion.start();//计算排斥力等，移动位置
+
+        PubSub.publishSync('layoutNodes',layoutNodes)
+        // console.log(layoutNodes);
+
         drawing(layoutNodes, width, height); //重新绘制节点
     })
 
