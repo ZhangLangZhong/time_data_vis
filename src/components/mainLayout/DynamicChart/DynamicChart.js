@@ -14,7 +14,7 @@ export default function DynamicChart({ FDT, NLT }) {
     const [initLayoutNodes, setinitLayoutNodes] = useState([])
 
     const [layoutNodes, setlayoutNodes] = useState([])
-    const [initHash, setinitHash] = useState(true)
+    // const [initHash, setinitHash] = useState(true)
     const [tarSou, settarSou] = useState([])
     const [preData, setpreData] = useState([])
     const [nodesIdArray, setnodesIdArray] = useState([])
@@ -70,27 +70,30 @@ export default function DynamicChart({ FDT, NLT }) {
             setstartBool(startBool => false)
             setinitLayoutNodes(initLayoutNodes => countArray(tarSou.links))
         }
-        funcInitLayoutNode()
-    })
-
-    const funcInitLayoutNode = useSyncCallback(() => {
-        console.log();
-        if (initHash) {
-            initLayoutNodes.map(item => {
-                HashNodes.add(item.id, item)
-            })
-            setinitHash(false)
-            setlayoutNodes(layoutNodes=>HashNodes.getValues)
-        }
+        // funcInitLayoutNode()
         drawLayoutChart()
     })
 
+    // const funcInitLayoutNode = useSyncCallback(() => {
+    //     console.log();
+    //     if (initHash) {
+    //         initLayoutNodes.map(item => {
+    //             HashNodes.add(item.id, item)
+    //         })
+    //         setinitHash(initHash=>false)
+    //         setlayoutNodes(layoutNodes=>HashNodes.getValues)
+    //     }
+    //     drawLayoutChart()
+    // })
+
     const drawLayoutChart = useSyncCallback(() => {
         setnowData(nowData => transform(tarSou))
+        setlayoutNodes(layoutNodes=>initLayoutNodes)
         drawLayoutChart2()
     })
 
     const drawLayoutChart2 = useSyncCallback(() => {
+        console.log(layoutNodes);
         var nowDatanode = findNode(nowData);
         var preDatanode = findNode(preData);
         // var addNode; 
@@ -166,6 +169,8 @@ export default function DynamicChart({ FDT, NLT }) {
         age.start();//设置年龄
         var repulsion = new RepulsionAll(layoutNodes, width, height);
         repulsion.start();//计算排斥力等，移动位置
+
+        drawing(layoutNodes, width, height); //重新绘制节点
 
     })
 
@@ -652,6 +657,73 @@ export default function DynamicChart({ FDT, NLT }) {
             return idIndex;
         }
     
+    }
+
+    function drawing(layoutNodes, width, height) {
+
+        // 写在外面的
+        var a = d3.rgb(255,0,0);	//红色
+        var b = d3.rgb(144,202,235);	//绿色
+        var compute = d3.interpolate(a,b);
+        var linear = d3.scale.linear()
+        .domain([1,10])
+        .range([0,1]);
+
+        d3.select(".mainLayout").select("svg").remove();
+        var id_index = idToIndex(layoutNodes);
+
+        var svg = d3.select(".mainLayout")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        for (var i = 0; i < layoutNodes.length; i++) {
+            svg.append("g")
+                .attr("class", "links")
+                .selectAll("line")
+                .data(layoutNodes[i].links).enter()
+                .append("line")
+                .attr("class", "link")
+                .attr("stroke-width", 0.5)
+                .attr("x1", layoutNodes[i].x)
+                .attr("y1", layoutNodes[i].y)
+                .attr("x2", function (d) {
+                    return layoutNodes[id_index[d] - 0].x;
+                })
+                .attr("y2", function (d) {
+                    return layoutNodes[id_index[d] - 0].y;
+                })
+                .attr("stroke", "gray")
+        }
+
+        svg.append("g")
+            .attr("class", "nodes")
+            .selectAll("circle")
+            .data(layoutNodes).enter()
+            .append("circle")
+            .attr("class", "node")
+            .attr("r", 5)
+            .attr("cx", function (d) {
+                return d.x;
+            })
+            .attr("cy", function (d) {
+                return d.y;
+            })
+            .attr("id", function (d) {
+                return d.id;
+            })
+            .attr("fill", function (d) {
+                return compute(linear(d.age))
+            })
+            .attr("stroke", "gray")
+    }
+
+    function idToIndex(layoutNodes) {
+        var idIndex = {};
+        layoutNodes.forEach(function (d) {
+            idIndex[d.id] = d.subs;
+        })
+        return idIndex;
     }
 
     function countArray(data) {
