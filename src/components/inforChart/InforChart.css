@@ -1,0 +1,11 @@
+.inforchart{
+    position: absolute;
+    top: 23px;
+    left: 0.2%;
+    /* background-color: aquamarine; */
+    height: 70%;
+    width: 17.42%;
+    border-style: solid;
+    border: 0.1%;
+    border-color: black;
+}

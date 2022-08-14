@@ -1,0 +1,11 @@
+.smallChart{
+    position: absolute;
+    top: 23px;
+    left: 71.2%;
+    /* background-color: aquamarine; */
+    height: 34.8%;
+    width: 28.2%;
+    border-style: solid;
+    border: 0.1%;
+    border-color: black;
+}

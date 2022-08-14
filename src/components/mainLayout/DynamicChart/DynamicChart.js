@@ -39,7 +39,7 @@ export default function DynamicChart({ FDT, NLT }) {
         })
         if (buttonOpen) {
             const timer = setInterval(() => {
-                console.log("           setInterval");
+                // console.log("           setInterval");
                 setnowTimeData(nowTimeData => nowTimeData + 1)
                 axiosInit()
             }, 1200)
@@ -49,7 +49,6 @@ export default function DynamicChart({ FDT, NLT }) {
 
     // 发送axios请求动态数据
     const axiosInit = useSyncCallback(() => {
-        console.log(nowTimeData);
         axios({
             method: 'get',
             url: 'http://localhost:3000/api/brush_extent',
@@ -74,18 +73,6 @@ export default function DynamicChart({ FDT, NLT }) {
         drawLayoutChart()
     })
 
-    // const funcInitLayoutNode = useSyncCallback(() => {
-    //     console.log();
-    //     if (initHash) {
-    //         initLayoutNodes.map(item => {
-    //             HashNodes.add(item.id, item)
-    //         })
-    //         setinitHash(initHash=>false)
-    //         setlayoutNodes(layoutNodes=>HashNodes.getValues)
-    //     }
-    //     drawLayoutChart()
-    // })
-
     const drawLayoutChart = useSyncCallback(() => {
         setnowData(nowData => transform(tarSou))
         setlayoutNodes(layoutNodes=>initLayoutNodes)
@@ -93,18 +80,11 @@ export default function DynamicChart({ FDT, NLT }) {
     })
 
     const drawLayoutChart2 = useSyncCallback(() => {
-        console.log(layoutNodes);
+        // console.log(layoutNodes);
         var nowDatanode = findNode(nowData);
         var preDatanode = findNode(preData);
-        // var addNode; 
-        // var layoutSourTar = preData;
-        // addNode = difference(nowDatanode, preDatanode)
-
         setaddNode(addNode=>difference(nowDatanode, preDatanode))
-
         setperLayoutNodes(perLayoutNodes=>[])
-        // var perLayoutNodes = [];
-        // console.log(layoutNodes);
         layoutNodes.forEach(function (d) {
             var dict = {
                 'id': d.id,
@@ -115,48 +95,36 @@ export default function DynamicChart({ FDT, NLT }) {
                 'y': d.y,
                 'subs': d.subs
             };
-            // perLayoutNodes.push(dict);
             setperLayoutNodes(perLayoutNodes=>[...perLayoutNodes,dict])
         });
         var perNodes = Array.from(preDatanode);
-        // console.log(perNodes);
         setpreData(preData=>nowData)
         setnodesIdArray(nodesIdArray=>[].concat(perNodes))
         drawLayoutChart3()
     })
 
     const drawLayoutChart3 = useSyncCallback(() => {
-        console.log(addNode);
+        // console.log(addNode);
         var layoutSourTar = preData;
-        // var addNodes = [];
-        // var addEdges = [];
         setaddEdges(addEdges=>[])
         setaddNodes(addNodes=>[])
         var layoutNodesStr = JSON.stringify(layoutSourTar);
-        // console.log(layoutNodesStr);
         nowData.forEach(function (d, index) {
             var sourceId = d.source, targetId = d.target;
             var d_str = JSON.stringify(d);
             if(!layoutNodesStr.includes(d_str)){
                 if(nodesIdArray.includes(sourceId) && nodesIdArray.includes(targetId)){
-                    // addEdges.push(d);
                     setaddEdges(addEdges=>[...addEdges,d])
                 }else{
-                    // addNodes.push(d);
                     setaddNodes(addNodes=>[...addNodes,d])
                 }
             }
         });
-        // console.log(addNodes);
-        // console.log(addEdges);
         setlayoutNodes(layoutNodes=>[].concat(deleteNodes(layoutNodes, nowData)))
         drawLayoutChart4()
     })
 
     const drawLayoutChart4 = useSyncCallback(() => {
-
-        // console.log(nowData);
-
         let getSVG = document.getElementsByClassName('mainLayout')
         let width = getSVG[0].clientWidth - 5
         let height = getSVG[0].clientHeight - 5
@@ -169,24 +137,18 @@ export default function DynamicChart({ FDT, NLT }) {
         age.start();//设置年龄
         var repulsion = new RepulsionAll(layoutNodes, width, height);
         repulsion.start();//计算排斥力等，移动位置
-
         drawing(layoutNodes, width, height); //重新绘制节点
-
     })
 
     function AER(layoutNodes,addEdges,width,height){
-
         var nodes = [];
         var id_index;
         var k = parseInt(Math.sqrt(width*height/layoutNodes.length)), a = 0.8 , b = 0.8;
         this.start = function(){
             this.nodePos();
-        }
-    
+        }   
         this.nodePos = function(){
             id_index = idToIndex(layoutNodes);
-    
-    
             var edgesOrder = this.edgeLengthOrder(addEdges);
             //先计算最长的边，然后依次计算
             // console.log('添加的边：');
@@ -727,7 +689,7 @@ export default function DynamicChart({ FDT, NLT }) {
     }
 
     function countArray(data) {
-        console.log("countArray");
+        // console.log("countArray");
         let nodeDict = {};
         let layoutNodes = [];
         data.forEach(function (item) {

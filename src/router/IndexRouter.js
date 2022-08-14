@@ -6,8 +6,6 @@ export default function IndexRouter() {
     console.log("IndexRouter");
     return (
         <div>
-        indexrouter....
-    
         <BrowserRouter>
             <Switch>
                 <Route path="/" component = {MainView}/>
