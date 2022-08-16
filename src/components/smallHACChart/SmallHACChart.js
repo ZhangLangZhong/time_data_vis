@@ -4,7 +4,7 @@ import axios from 'axios'
 import * as d3 from 'd3'
 import './SmallHACChart.css'
 
-export default function MatrixChart() {
+export default function SmallHACChart() {
 
   const [MatrixInit, setMatrixInit] = useState([])
 

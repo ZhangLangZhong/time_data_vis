@@ -1,10 +1,10 @@
 import React from 'react'
 import './MatrixChart.css'
 
-export default function smallHACChart() {
+export default function MatrixChart() {
   return (
     <div className='matrixChart'>
-        smallChart..
+        matrix..
     </div>
   )
 }

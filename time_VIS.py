@@ -189,6 +189,17 @@ def HAC_CLUSTRING():
     jsonTemp = jsonAllNodes.replace("'",'"')
     return jsonify(jsonTemp)
 
+
+@app.route('/api/testSort')
+def test_SortedData():
+    try:  
+        with open('files/sortedData/sortedData.json') as fi:
+            result = json.load(fi)
+            # print(result)
+            return jsonify(result)
+    except:
+        return jsonify({})
+
 class KeyValue:
     def __init__(self, key: int, value: Any) -> None:
         self.key: int = key

@@ -10,6 +10,8 @@
     "axios": "^0.27.2",
     "d3": "^3.5.17",
     "flask": "^0.2.10",
+    "highcharts": "^10.2.0",
+    "highcharts-more": "^0.1.7",
     "pandas": "^0.0.3",
     "pubsub-js": "^1.9.4",
     "react": "^18.2.0",
