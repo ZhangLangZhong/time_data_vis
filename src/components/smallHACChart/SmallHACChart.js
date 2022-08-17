@@ -34,7 +34,7 @@ export default function SmallHACChart() {
   }, [MatrixInit])
 
   function drawHACTimeGraph(hacNodes) {
-    console.log(hacNodes);
+    // console.log(hacNodes);
     let socialHac = []
     let hashHacNodes = new HashTable()
     hacNodes.forEach(d => {
@@ -59,6 +59,10 @@ export default function SmallHACChart() {
       }
     })
     let centerNodes = []
+
+    PubSub.publishSync('socialHac',socialHac)
+    // console.log(socialHac);
+
     socialHac.forEach(d => {
       /**
        * part1 求中心点的坐标位置
@@ -67,6 +71,7 @@ export default function SmallHACChart() {
       let HacCenterNode_X = 0
       let HacCenterNode_Y = 0
       let indexNum = []
+      
       d.List.forEach(socialNode => {
         // console.log(socialNode)
         // let
@@ -92,10 +97,14 @@ export default function SmallHACChart() {
       let value = { "index": d.index, "x": center_x, "y": center_y, "indexLinks": indexFinal }
       centerNodes.push(value)
     })
+
+    // console.log(centerNodes);
+
     let HashFinalNodes = new HashTable()
     centerNodes.forEach(d => {
       HashFinalNodes.add(d.index, d)
     })
+    // console.log(centerNodes);
     drawingHACGraph(centerNodes, HashFinalNodes)
   }
 

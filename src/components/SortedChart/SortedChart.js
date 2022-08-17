@@ -1,184 +1,233 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './SortedChart.css'
-import * as Highcharts from 'highcharts';
+import * as Chart from 'chart.js';
+import PubSub from 'pubsub-js'
 import axios from 'axios'
+// import { max } from 'd3';
+// import { toBePartiallyChecked } from '@testing-library/jest-dom/dist/matchers';
 
+var labelsDATA = []
 
 export default function SortedChart() {
 
+  const [riverData,setriverData] = useState([])
+  const [timeData,settimeData] = useState('')
+
+  var datasetsDATA = []
   useEffect(() => {
-    declare var require: any;
-    require('highcharts/highcharts-more')(Highcharts);
-
-    // var ranges = [
-    //   [1246406400000, 14.3, 27.7],
-    //   [1246492800000, 14.5, 27.8],
-    //   [1246579200000, 15.5, 29.6],
-    //   [1246665600000, 16.7, 30.7],
-    //   [1246752000000, 16.5, 25.0],
-    //   [1246838400000, 17.8, 25.7],
-    //   [1246924800000, 13.5, 24.8],
-    //   [1247011200000, 10.5, 21.4],
-    //   [1247097600000, 9.2, 23.8],
-    //   [1247184000000, 11.6, 21.8],
-    //   [1247270400000, 10.7, 23.7],
-    //   [1247356800000, 11.0, 23.3],
-    //   [1247443200000, 11.6, 23.7],
-    //   [1247529600000, 11.8, 20.7],
-    //   [1247616000000, 12.6, 22.4],
-    //   [1247702400000, 13.6, 19.6],
-    //   [1247788800000, 11.4, 22.6],
-    //   [1247875200000, 13.2, 25.0],
-    //   [1247961600000, 14.2, 21.6],
-    //   [1248048000000, 13.1, 17.1],
-    //   [1248134400000, 12.2, 15.5],
-    //   [1248220800000, 12.0, 20.8],
-    //   [1248307200000, 12.0, 17.1],
-    //   [1248393600000, 12.7, 18.3],
-    //   [1248480000000, 12.4, 19.4],
-    //   [1248566400000, 12.6, 19.9],
-    //   [1248652800000, 11.9, 20.2],
-    //   [1248739200000, 11.0, 19.3],
-    //   [1248825600000, 10.8, 17.8],
-    //   [1248912000000, 11.8, 18.5],
-    //   [1248998400000, 10.8, 16.1]
-    // ],
-    //   // 平均数据，格式：[时间戳, 值]
-    //   averages = [
-    //     [1246406400000, 21.5],
-    //     [1246492800000, 22.1],
-    //     [1246579200000, 23],
-    //     [1246665600000, 23.8],
-    //     [1246752000000, 21.4],
-    //     [1246838400000, 21.3],
-    //     [1246924800000, 18.3],
-    //     [1247011200000, 15.4],
-    //     [1247097600000, 16.4],
-    //     [1247184000000, 17.7],
-    //     [1247270400000, 17.5],
-    //     [1247356800000, 17.6],
-    //     [1247443200000, 17.7],
-    //     [1247529600000, 16.8],
-    //     [1247616000000, 17.7],
-    //     [1247702400000, 16.3],
-    //     [1247788800000, 17.8],
-    //     [1247875200000, 18.1],
-    //     [1247961600000, 17.2],
-    //     [1248048000000, 14.4],
-    //     [1248134400000, 13.7],
-    //     [1248220800000, 15.7],
-    //     [1248307200000, 14.6],
-    //     [1248393600000, 15.3],
-    //     [1248480000000, 15.3],
-    //     [1248566400000, 15.8],
-    //     [1248652800000, 15.2],
-    //     [1248739200000, 14.8],
-    //     [1248825600000, 14.4],
-    //     [1248912000000, 15],
-    //     [1248998400000, 13.6]
-    //   ];
-    // Highcharts.chart('sortedChart', {
-    //   title: {
-    //     text: '社区范围'
-    //   },
-    //   xAxis: {
-    //     type: 'datetime',
-    //     crosshairs: true
-    //   },
-    //   yAxis: {
-    //     title: {
-    //       text: null
-    //     }
-    //   },
-    //   tooltip: {
-    //     shared: true,
-    //     valueSuffix: '°C'
-    //   },
-    //   series: [{
-    //     name: '社区',
-    //     data: averages,
-    //     zIndex: 1, // 控制显示层叠
-    //     marker: {
-    //       fillColor: 'white',
-    //       lineWidth: 2,
-    //       lineColor: Highcharts.getOptions().colors[0]
-    //     }
-    //   }, {
-    //     name: '范围',
-    //     data: ranges,
-    //     type: 'arearange',
-    //     lineWidth: 0,
-    //     linkedTo: ':previous', // 与上一个数据列进行关联，或者直接赋值 0
-    //     color: Highcharts.getOptions().colors[0],
-    //     fillOpacity: 0.3,
-    //     zIndex: 0,
-    //     marker: {
-    //       enabled: false
-    //     }
-    //   }]
-    // });
-
-    axios.get("http://localhost:3000/api/testSort").then(res=>{
-
-        drawSorted(res.data)
+    console.log('         SortedChart111111111');
+    PubSub.subscribe('socialHac',(msg,data)=>{
+      setriverData(riverData=>data)
+    })
+    PubSub.subscribe('timeData',(msg,data)=>{
+      settimeData(timeData=>data)
     })
 
+    // axios.get("http://localhost:3000/api/Sorted").then(res=>{
+    //   console.log(res.data);
+    // })
 
-  }, [])
+    if (timeData) {
+      funcDataSets()
+      drawSorted() 
+    }
+  }, [riverData])
 
-  function drawSorted(data) {
+  function funcDataSets(){
+    labelsDATA.push(timeData)
+    // console.log(labels);
+    // console.log(riverData);
+    riverData.map((d)=>{
+      // console.log(d);
+      let labelNow = String(d.index)
+      // console.log(label);
+      let fillNow = false
 
-    Highcharts.chart('sortedChart', {
+      let dyTemp = 0
+      d.List.map((dy)=>{
+        dyTemp = dyTemp + dy.y
+      })
+      let dataNow = dyTemp/d.List.length
 
-      chart: {
-        type: 'arearange',
-        zoomType: 'x',
-        scrollablePlotArea: {
-          minWidth: 600,
-          scrollPositionX: 1
+      let max = 0
+      let min = 9999
+      for (let i = 0; i < d.List.length; i++) {
+        if (d.List[i].y > max) {
+          max = d.List[i].y
         }
-      },
+        if (d.List[i].y < min) {
+          min = d.List[i].y
+        } 
+      }
+      let widthNow= max - min
 
-      title: {
-        text: 'Temperature variation by day'
-      },
-
-      xAxis: {
-        type: 'datetime',
-        accessibility: {
-          rangeDescription: 'Range: Jan 1st 2017 to Dec 31 2017.'
-        }
-      },
-
-      yAxis: {
-        title: {
-          text: null
-        }
-      },
-
-      tooltip: {
-        crosshairs: true,
-        shared: true,
-        valueSuffix: '°C',
-        xDateFormat: '%A, %b %e'
-      },
-
-      legend: {
-        enabled: false
-      },
-
-      series: [{
-        name: 'Temperatures',
-        data: data
-      }]
-
+      let value = {
+        label:labelNow,
+        fill:fillNow,
+        data:[dataNow],
+        width:[widthNow],
+        backgroundColor:"rgba(75,192,192,0.4)",
+      }
+      // console.log(value);
+      datasetsDATA.push(value)
     })
+    console.log(datasetsDATA);
+
   }
 
+  function drawSorted() {
+    Chart.defaults.stripe = Chart.helpers.clone(Chart.defaults.line);
+    Chart.controllers.stripe = Chart.controllers.line.extend({
+      draw: function (ease) {
+        var result = Chart.controllers.line.prototype.draw.apply(this, arguments);
+        // don't render the stripes till we've finished animating
+        /* if (!this.rendered && ease !== 1)
+          return; */
+        this.rendered = true;
+        var helpers = Chart.helpers;
+        var meta = this.getMeta();
+        var yScale = this.getScaleForId(meta.yAxisID);
+        var yScaleZeroPixel = yScale.getPixelForValue(0);
+        var widths = this.getDataset().width;
+        var ctx = this.chart.chart.ctx;
+        ctx.save();
+        ctx.fillStyle = this.getDataset().backgroundColor;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        // initialize the data and bezier control points for the top of the stripe
+        helpers.each(meta.data, function (point, index) {
+          point._view.y += (yScale.getPixelForValue(widths[index]) - yScaleZeroPixel);
+        });
+        Chart.controllers.line.prototype.updateBezierControlPoints.apply(this);
+        // draw the top of the stripe
+        helpers.each(meta.data, function (point, index) {
+          if (index === 0)
+            ctx.moveTo(point._view.x, point._view.y);
+          else {
+            var previous = helpers.previousItem(meta.data, index);
+            var next = helpers.nextItem(meta.data, index);
+
+            Chart.elements.Line.prototype.lineToNextPoint.apply({
+              _chart: {
+                ctx: ctx
+              }
+            }, [previous, point, next, null, null])
+          }
+        });
+        // revert the data for the top of the stripe
+        // initialize the data and bezier control points for the bottom of the stripe
+        helpers.each(meta.data, function (point, index) {
+          point._view.y -= 2 * (yScale.getPixelForValue(widths[index]) - yScaleZeroPixel);
+        });
+        // we are drawing the points in the reverse direction
+        meta.data.reverse();
+        Chart.controllers.line.prototype.updateBezierControlPoints.apply(this);
+        // draw the bottom of the stripe
+        helpers.each(meta.data, function (point, index) {
+          if (index === 0)
+            ctx.lineTo(point._view.x, point._view.y);
+          else {
+            var previous = helpers.previousItem(meta.data, index);
+            var next = helpers.nextItem(meta.data, index);
+            Chart.elements.Line.prototype.lineToNextPoint.apply({
+              _chart: {
+                ctx: ctx
+              }
+            }, [previous, point, next, null, null])
+          }
+        });
+        // revert the data for the bottom of the stripe
+        meta.data.reverse();
+        helpers.each(meta.data, function (point, index) {
+          point._view.y += (yScale.getPixelForValue(widths[index]) - yScaleZeroPixel);
+        });
+        Chart.controllers.line.prototype.updateBezierControlPoints.apply(this);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+        return result;
+      }
+    });
+    var ctx = document.getElementById("sorted");
+    let aaa = new Chart(ctx, {
+      type: 'stripe',
+      data: {
+        labels: labelsDATA,
+        datasets:datasetsDATA
+      },
+
+
+      // type: 'stripe',
+      // // data: {
+      // //   labels: ['January', "February", "March", "April", "May", "June", "July"],
+      // //   datasets: [{
+      // //     label: "My First dataset",
+      // //     fill: false,   
+      // //     data: [65, 20, 80, 81, 56, 85, 40],
+      // //     width: [12, 4, 5, 13, 12, 2, 19],
+      // //     // borderColor: "rgba(75,192,192,1)",
+      // //     backgroundColor: "rgba(75,192,192,0.4)",
+      // //     // pointRadius: 0
+      // //   }, {
+      // //     label: "My Second dataset",
+      // //     fill: false,   
+      // //     data: [80, 81, 56, 85, 40, 65, 20],
+      // //     width: [4, 5, 13, 12, 2, 19, 12],
+      // //     // borderColor: "rgba(192,75,192,1)",
+      // //     backgroundColor: "rgba(192,75,192,0.4)",
+      // //     // pointRadius: 0
+      // //   }, {
+      // //     label: "My Third dataset",
+      // //     fill: false,
+      // //     data: [81, 56, 85, 40, 65, 20, 80],
+      // //     width: [5, 13, 12, 2, 19, 12, 4],
+      // //     // borderColor: "rgba(192,102,75,1)",
+      // //     backgroundColor: "rgba(192,192,75,0.4)",
+      // //     // pointRadius: 0
+      // //   }]
+      // // },
+      
+
+
+
+      // data:{
+      //   labels:labelsDATA,
+      //   datasets:[datasetsDATA]
+      // },
+      options: {
+        legend: {
+          display:false,
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              fontColor:"black",
+              fontSize: 20,
+            }
+          }],
+          yAxes: [{
+            ticks: {
+              fontColor:"black",
+              fontSize: 20,
+              min: 300,
+              max: 600
+            }
+          }]
+
+
+
+        }
+      }
+    });
+    console.log(aaa);
+  }
 
   return (
-    <div id='sortedChart'>
+  <canvas id='sorted'>
+    {/* <canvas id='sortedChart'>
 
-    </div>
+    </canvas> */}
+  </canvas>
   )
 }

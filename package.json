@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "antd": "^4.22.4",
     "axios": "^0.27.2",
+    "chart.js": "^2.1.6",
     "d3": "^3.5.17",
     "flask": "^0.2.10",
     "highcharts": "^10.2.0",

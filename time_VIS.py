@@ -200,6 +200,16 @@ def test_SortedData():
     except:
         return jsonify({})
 
+# @app.route('/api/Sorted')
+# def test_SortedData111():
+#     try:  
+#         with open('files/sortedData/sorted.txt') as fi:
+#             print(fi)
+#             return fi
+#     except:
+#         return 0
+
+
 class KeyValue:
     def __init__(self, key: int, value: Any) -> None:
         self.key: int = key

@@ -41,6 +41,7 @@ export default function DynamicChart({ FDT, NLT }) {
             const timer = setInterval(() => {
                 // console.log("           setInterval");
                 setnowTimeData(nowTimeData => nowTimeData + 1)
+                // console.log(nowTimeData);
                 axiosInit()
             }, 2200)
             return () => clearInterval(timer)
@@ -59,6 +60,8 @@ export default function DynamicChart({ FDT, NLT }) {
             }
         }).then(res => {
             let timeData = FDT(init_data_line[nowTimeData].date)
+            // console.log(timeData);
+            PubSub.publishSync('timeData',timeData)
             settarSou(tarSou=>res.data)
             funcInitDynamicChart()
         })
