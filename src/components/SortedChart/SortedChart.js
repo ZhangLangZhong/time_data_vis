@@ -7,20 +7,21 @@ import axios from 'axios'
 // import { toBePartiallyChecked } from '@testing-library/jest-dom/dist/matchers';
 
 var labelsDATA = []
+var datasetsDATA = []
 
 export default function SortedChart() {
 
-  const [riverData,setriverData] = useState([])
-  const [timeData,settimeData] = useState('')
+  const [riverData, setriverData] = useState([])
+  const [timeData, settimeData] = useState('')
+  const [initSort, setinitSort] = useState(true)
 
-  var datasetsDATA = []
   useEffect(() => {
     console.log('         SortedChart111111111');
-    PubSub.subscribe('socialHac',(msg,data)=>{
-      setriverData(riverData=>data)
+    PubSub.subscribe('socialHac', (msg, data) => {
+      setriverData(riverData => data)
     })
-    PubSub.subscribe('timeData',(msg,data)=>{
-      settimeData(timeData=>data)
+    PubSub.subscribe('timeData', (msg, data) => {
+      settimeData(timeData => data)
     })
 
     // axios.get("http://localhost:3000/api/Sorted").then(res=>{
@@ -28,26 +29,33 @@ export default function SortedChart() {
     // })
 
     if (timeData) {
-      funcDataSets()
-      drawSorted() 
+      // console.log(initSort);
+      if (initSort) {
+        funcDataSets()
+        setinitSort(initSort => false)
+      } else {
+        funcDataSets2()
+      }
+
+      drawSorted()
     }
   }, [riverData])
 
-  function funcDataSets(){
+  function funcDataSets() {
+    console.log(datasetsDATA);
     labelsDATA.push(timeData)
-    // console.log(labels);
-    // console.log(riverData);
-    riverData.map((d)=>{
+
+    riverData.map((d) => {
+
       // console.log(d);
       let labelNow = String(d.index)
-      // console.log(label);
       let fillNow = false
 
       let dyTemp = 0
-      d.List.map((dy)=>{
+      d.List.map((dy) => {
         dyTemp = dyTemp + dy.y
       })
-      let dataNow = dyTemp/d.List.length
+      let dataNow = dyTemp / d.List.length
 
       let max = 0
       let min = 9999
@@ -57,22 +65,109 @@ export default function SortedChart() {
         }
         if (d.List[i].y < min) {
           min = d.List[i].y
-        } 
+        }
       }
-      let widthNow= max - min
+      let widthNow = max - min
+
+      let r = Math.round(Math.random()*255);
+      let g = Math.round(Math.random()*255);
+      let b = Math.round(Math.random()*255);
+      
 
       let value = {
-        label:labelNow,
-        fill:fillNow,
-        data:[dataNow],
-        width:[widthNow],
-        backgroundColor:"rgba(75,192,192,0.4)",
+        label: labelNow,
+        fill: fillNow,
+        data: [dataNow],
+        width: [widthNow],
+        backgroundColor: "rgba("+r+","+g+","+b+",0.4)"
       }
-      // console.log(value);
       datasetsDATA.push(value)
     })
-    console.log(datasetsDATA);
+    // console.log(datasetsDATA);
 
+  }
+
+  function funcDataSets2() {
+    // console.log(datasetsDATA);
+    labelsDATA.push(timeData)
+    let hashDataSets = new HashTable()
+    datasetsDATA.map(d => {
+      hashDataSets.add(d.label, d)
+    })
+    // console.log(hashDataSets);
+    // console.log(hashDataSets.getValues());
+
+    riverData.map((d) => {
+      if (hashDataSets.containsKey(d.index)) {
+        let labelNow = String(d.index)
+        let fillNow = false
+        let dyTemp = 0
+        d.List.map((dy) => {
+          dyTemp = dyTemp + dy.y
+        })
+        let dataNow = dyTemp / d.List.length
+
+        let max = 0
+        let min = 9999
+        for (let i = 0; i < d.List.length; i++) {
+          if (d.List[i].y > max) {
+            max = d.List[i].y
+          }
+          if (d.List[i].y < min) {
+            min = d.List[i].y
+          }
+        }
+        let widthNow = max - min
+
+        let value = {
+          label: labelNow,
+          fill: fillNow,
+          data: [...hashDataSets.getValue(d.index).data, dataNow],
+          width: [...hashDataSets.getValue(d.index).width, widthNow],
+          backgroundColor: hashDataSets.getValue(d.index).backgroundColor
+        }
+        // console.log(value);
+        hashDataSets.remove(d.index)
+        hashDataSets.add(d.index, value)
+        datasetsDATA = hashDataSets.getValues()
+        
+        // datasetsDATA = hashDataSets.getValues
+        // console.log(datasetsDATA);
+      } else {
+        let labelNow = String(d.index)
+        let fillNow = false
+
+        let dyTemp = 0
+        d.List.map((dy) => {
+          dyTemp = dyTemp + dy.y
+        })
+        let dataNow = dyTemp / d.List.length
+
+        let max = 0
+        let min = 9999
+        for (let i = 0; i < d.List.length; i++) {
+          if (d.List[i].y > max) {
+            max = d.List[i].y
+          }
+          if (d.List[i].y < min) {
+            min = d.List[i].y
+          }
+        }
+        let widthNow = max - min
+        let r = Math.round(Math.random()*255);
+        let g = Math.round(Math.random()*255);
+        let b = Math.round(Math.random()*255);
+        let value = {
+          label: labelNow,
+          fill: fillNow,
+          data: [dataNow],
+          width: [widthNow],
+          backgroundColor: "rgba("+r+","+g+","+b+",0.4)",
+        }
+        datasetsDATA.push(value)
+      }
+      // hashDataSets.getValue()
+    })
   }
 
   function drawSorted() {
@@ -154,80 +249,89 @@ export default function SortedChart() {
       type: 'stripe',
       data: {
         labels: labelsDATA,
-        datasets:datasetsDATA
+        datasets: datasetsDATA
       },
-
-
-      // type: 'stripe',
-      // // data: {
-      // //   labels: ['January', "February", "March", "April", "May", "June", "July"],
-      // //   datasets: [{
-      // //     label: "My First dataset",
-      // //     fill: false,   
-      // //     data: [65, 20, 80, 81, 56, 85, 40],
-      // //     width: [12, 4, 5, 13, 12, 2, 19],
-      // //     // borderColor: "rgba(75,192,192,1)",
-      // //     backgroundColor: "rgba(75,192,192,0.4)",
-      // //     // pointRadius: 0
-      // //   }, {
-      // //     label: "My Second dataset",
-      // //     fill: false,   
-      // //     data: [80, 81, 56, 85, 40, 65, 20],
-      // //     width: [4, 5, 13, 12, 2, 19, 12],
-      // //     // borderColor: "rgba(192,75,192,1)",
-      // //     backgroundColor: "rgba(192,75,192,0.4)",
-      // //     // pointRadius: 0
-      // //   }, {
-      // //     label: "My Third dataset",
-      // //     fill: false,
-      // //     data: [81, 56, 85, 40, 65, 20, 80],
-      // //     width: [5, 13, 12, 2, 19, 12, 4],
-      // //     // borderColor: "rgba(192,102,75,1)",
-      // //     backgroundColor: "rgba(192,192,75,0.4)",
-      // //     // pointRadius: 0
-      // //   }]
-      // // },
-      
-
-
-
-      // data:{
-      //   labels:labelsDATA,
-      //   datasets:[datasetsDATA]
-      // },
       options: {
-        legend: {
-          display:false,
-        },
+        // legend: {
+        //   display: false,
+        // },
         scales: {
           xAxes: [{
             ticks: {
-              fontColor:"black",
+              fontColor: "black",
               fontSize: 20,
             }
           }],
           yAxes: [{
             ticks: {
-              fontColor:"black",
+              fontColor: "black",
               fontSize: 20,
-              min: 300,
-              max: 600
+              min: 200,
+              max: 800
             }
           }]
-
-
-
         }
       }
     });
-    console.log(aaa);
+
+  }
+
+  function HashTable() {
+    var size = 0;
+    var entry = new Object();
+    this.add = function (key, value) {
+      if (!this.containsKey(key)) {
+        size++;
+      }
+      entry[key] = value;
+    }
+    this.getValue = function (key) {
+      return this.containsKey(key) ? entry[key] : null;
+    }
+    this.remove = function (key) {
+      if (this.containsKey(key) && (delete entry[key])) {
+        size--;
+      }
+    }
+    this.containsKey = function (key) {
+      return (key in entry);
+    }
+    this.containsValue = function (value) {
+      for (var prop in entry) {
+        if (entry[prop] == value) {
+          return true;
+        }
+      }
+      return false;
+    }
+    this.getValues = function () {
+      var values = new Array();
+      for (var prop in entry) {
+        values.push(entry[prop]);
+      }
+      return values;
+    }
+    this.getKeys = function () {
+      var keys = new Array();
+      for (var prop in entry) {
+        keys.push(prop);
+      }
+      return keys;
+    }
+    this.getSize = function () {
+      return size;
+    }
+    this.clear = function () {
+      size = 0;
+      entry = new Object();
+    }
   }
 
   return (
-  <canvas id='sorted'>
-    {/* <canvas id='sortedChart'>
+    <canvas id='sorted'>
+      {/* <canvas id='sortedChart'>
 
     </canvas> */}
-  </canvas>
+    </canvas>
   )
 }
