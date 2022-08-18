@@ -65,10 +65,23 @@ def get_current_time():
 
 @app.route('/api/element_position')
 def HAC_CLUSTRING():
+
     mergeRatio = 0.002
     clusterCenterNumber = 28
     layoutNodesInformation = request.args.get("nodeInformation")
+    perNodesInfor = request.args.get("perNodeInformation")
     jsonNodeData = pd.read_json(layoutNodesInformation,orient="records")
+    perNodeData = pd.read_json(perNodesInfor,orient="records")
+    # print(perNodesInfor)
+    # print(perNodeData)
+
+    if(len(perNodeData) > 1):
+        perNodes = {"nodes":[],"links":[]}
+        pernode_id = perNodeData['id']
+        for i in range(0,len(perNodeData)):
+            value = {}
+    
+    # print(jsonNodeData)
     allNodes = {"nodes":[],"links":[]}
     node_id = jsonNodeData["id"]
     node_x = jsonNodeData["x"]
@@ -80,6 +93,7 @@ def HAC_CLUSTRING():
         value = {"id":node_id[i],"x":node_x[i],"y":node_y[i],"group":node_id[i],"index":numberTemp,"degree":node_degree[i],"status":-1,'links':node_links[i]}
         numberTemp = numberTemp + 1
         allNodes["nodes"].append(value)
+    # print(allNodes["nodes"])
     pointsNumber = len(node_id)
     tarSouNumber = len(souTar)
     distanceMap = {}
@@ -174,6 +188,7 @@ def HAC_CLUSTRING():
     
     jsonAllNodes = str(allNodes)
     jsonTemp = jsonAllNodes.replace("'",'"')
+   
     return jsonify(jsonTemp)
 
 

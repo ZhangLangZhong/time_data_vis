@@ -42,7 +42,7 @@ export default function SortedChart() {
   }, [riverData])
 
   function funcDataSets() {
-    console.log(datasetsDATA);
+    // console.log(datasetsDATA);
     labelsDATA.push(timeData)
 
     riverData.map((d) => {
