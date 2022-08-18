@@ -7,22 +7,27 @@ import './SmallHACChart.css'
 export default function SmallHACChart() {
 
   const [MatrixInit, setMatrixInit] = useState([])
-
+  const [axhacNodes,setaxhacNodes] = useState([])
   console.log("smallChart");
   useEffect(() => {
     // console.log("smallChart  useEffect");
     PubSub.subscribe('layoutNodes', (msg, data) => {
       setMatrixInit(MatrixInit => data)
     })
-    // console.log(MatrixInit);
+    PubSub.subscribe('hacNodes', (msg, data) => {
+      setaxhacNodes(axhacNodes => data)
+    })
+    console.log(axhacNodes);
     if (MatrixInit.length != 0) {
 
       var jsonForHAC = JSON.stringify(MatrixInit)
+      var perNodeInfor = JSON.stringify(axhacNodes)
       axios({
         method: 'get',
         url: 'http://localhost:3000/api/element_position',
         params: {
           "nodeInformation": jsonForHAC,
+          "perNodeInformation":perNodeInfor
         }
       })
         .then(res => {
@@ -35,6 +40,8 @@ export default function SmallHACChart() {
 
   function drawHACTimeGraph(hacNodes) {
     // console.log(hacNodes);
+    PubSub.publishSync('hacNodes',hacNodes)
+
     let socialHac = []
     let hashHacNodes = new HashTable()
     hacNodes.forEach(d => {
