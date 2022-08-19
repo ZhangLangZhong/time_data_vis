@@ -72,6 +72,8 @@ export default function SmallHACChart() {
     PubSub.publishSync('socialHac',socialHac)
     // console.log(socialHac);
 
+    let indexInfo = []
+    let indexXY = []
     socialHac.forEach(d => {
       /**
        * part1 求中心点的坐标位置
@@ -81,9 +83,8 @@ export default function SmallHACChart() {
       let HacCenterNode_Y = 0
       let indexNum = []
       
+
       d.List.forEach(socialNode => {
-        // console.log(socialNode)
-        // let
         HacCenterNode_X += socialNode.x
         HacCenterNode_Y += socialNode.y
         for (let i = 0; i < socialNode.links.length; i++) {
@@ -97,9 +98,15 @@ export default function SmallHACChart() {
           else {
             indexNum.push(hashHacNodes.getValue(socialNode.links[i]).index)
           }
-
         }
       })
+
+      indexXY.push(d.index)
+      for(let index in getEleNums(indexNum)){
+        let indexValue = [d.index,Number(index),getEleNums(indexNum)[index]]
+        indexInfo.push(indexValue)
+      }
+      
       let indexFinal = unique(indexNum)
       let center_x = HacCenterNode_X / d.List.length/1.866
       let center_y = HacCenterNode_Y / d.List.length/2
@@ -107,7 +114,11 @@ export default function SmallHACChart() {
       centerNodes.push(value)
     })
 
-    // console.log(centerNodes);
+    PubSub.publishSync("indexXY",indexXY)
+
+    PubSub.publishSync("indexInfo",indexInfo)
+
+    PubSub.publishSync("centerNodes",centerNodes)
 
     let HashFinalNodes = new HashTable()
     centerNodes.forEach(d => {
@@ -187,6 +198,19 @@ export default function SmallHACChart() {
       }
     }
     return newArr;
+  }
+
+  function getEleNums(data) {
+    var map = {}
+    for (let i = 0; i < data.length; i++) {
+        var key = data[i]
+        if (map[key]) {
+            map[key] += 1
+        } else {
+            map[key] = 1
+        }
+    }
+    return map
   }
 
   function HashTable() {

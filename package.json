@@ -10,6 +10,7 @@
     "axios": "^0.27.2",
     "chart.js": "^2.1.6",
     "d3": "^3.5.17",
+    "echarts": "^5.3.3",
     "flask": "^0.2.10",
     "highcharts": "^10.2.0",
     "highcharts-more": "^0.1.7",
