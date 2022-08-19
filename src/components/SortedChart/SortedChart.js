@@ -262,6 +262,9 @@ export default function SortedChart() {
               fontSize: 20,
             }
           }],
+
+          
+
           yAxes: [{
             ticks: {
               fontColor: "black",
