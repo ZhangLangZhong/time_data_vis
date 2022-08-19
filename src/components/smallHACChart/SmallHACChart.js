@@ -17,7 +17,7 @@ export default function SmallHACChart() {
     PubSub.subscribe('hacNodes', (msg, data) => {
       setaxhacNodes(axhacNodes => data)
     })
-    console.log(axhacNodes);
+    // console.log(axhacNodes);
     if (MatrixInit.length != 0) {
 
       var jsonForHAC = JSON.stringify(MatrixInit)
@@ -25,6 +25,8 @@ export default function SmallHACChart() {
       axios({
         method: 'get',
         url: 'http://localhost:3000/api/element_position',
+        // url: 'http://localhost:3000/api/testHAC',
+
         params: {
           "nodeInformation": jsonForHAC,
           "perNodeInformation":perNodeInfor

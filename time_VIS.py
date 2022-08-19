@@ -1,3 +1,4 @@
+from cmath import log
 from flask import Flask,request
 import json
 import os
@@ -72,28 +73,18 @@ def HAC_CLUSTRING():
     perNodesInfor = request.args.get("perNodeInformation")
     jsonNodeData = pd.read_json(layoutNodesInformation,orient="records")
     perNodeData = pd.read_json(perNodesInfor,orient="records")
-    # print(perNodesInfor)
-    # print(perNodeData)
 
-    if(len(perNodeData) > 1):
-        perNodes = {"nodes":[],"links":[]}
-        pernode_id = perNodeData['id']
-        for i in range(0,len(perNodeData)):
-            value = {}
-    
-    # print(jsonNodeData)
     allNodes = {"nodes":[],"links":[]}
     node_id = jsonNodeData["id"]
     node_x = jsonNodeData["x"]
     node_y = jsonNodeData["y"]
     node_degree = jsonNodeData["degree"]
     node_links = jsonNodeData['links']
-    numberTemp = 0
+    # numberTemp = 0
     for i in range(0,len(jsonNodeData)):
-        value = {"id":node_id[i],"x":node_x[i],"y":node_y[i],"group":node_id[i],"index":numberTemp,"degree":node_degree[i],"status":-1,'links':node_links[i]}
-        numberTemp = numberTemp + 1
+        value = {"id":node_id[i],"x":node_x[i],"y":node_y[i],"group":node_id[i],"index":node_id[i],"degree":node_degree[i],"status":-1,'links':node_links[i]}
+        # numberTemp = numberTemp + 1
         allNodes["nodes"].append(value)
-    # print(allNodes["nodes"])
     pointsNumber = len(node_id)
     tarSouNumber = len(souTar)
     distanceMap = {}
@@ -102,6 +93,34 @@ def HAC_CLUSTRING():
     for i in allNodes["nodes"]:
         node_hash.put(i["id"],i)
         hashTemp = node_hash      
+    
+    if(len(perNodeData) > 1):
+        perNodes = {"nodes":[],"links":[]}
+        pernode_id = perNodeData['id']
+        pernode_index = perNodeData['index']
+        for i in range(0,len(perNodeData)):
+            value = {"id":pernode_id[i],"index":pernode_index[i]}
+            perNodes["nodes"].append(value)
+        pernode_hash = HashTable()
+        perhash_temp = pernode_hash
+        for i in perNodes["nodes"]:
+            pernode_hash.put(i["id"],i)
+            perhash_temp = pernode_hash
+        # if(perhash_temp.contains())
+        for index in allNodes["nodes"]:
+            # print(index['id'])
+            if(perhash_temp.contains(index['id'])):
+                hashTemp.get(index['id'])['index'] = perhash_temp.get(index['id'])['index']
+        for index in allNodes["nodes"]:
+            if(perhash_temp.contains(index['id'])==False):
+                linkINT = int(hashTemp.get(index['id'])['links'][0])
+                hashTemp.get(index['id'])['index'] = hashTemp.get(linkINT)['index']
+
+        jsonAllNodes = str(allNodes)
+        jsonTemp = jsonAllNodes.replace("'",'"')
+        return jsonify(jsonTemp)
+
+    
     distanceMap = {}
     for i in souTar:
         linkSource = int(i["source"])
@@ -118,64 +137,80 @@ def HAC_CLUSTRING():
         distanceMap[str(hashTemp.get(linkSource)["id"]) + '#' + str(hashTemp.get(linkTarget)["id"])] = nodesDistance/(hashTemp.get(linkTarget)['degree']*0.5)
 
     distanceMap = sorted(distanceMap.items(), key=lambda dist: dist[1], reverse=False)
-    # print(distanceMap)
-    unsortedGroup = {index:1 for index in range(len(allNodes["nodes"]))}
+ 
+    arrNodesID = []
+    for index in allNodes["nodes"]:
+        arrNodesID.append(index["id"])
+
+    unsortedGroup = {index:1 for index in arrNodesID}
+
     for key,_ in distanceMap:
         lowIndex, highIndex = int(key.split("#")[0]), int(key.split("#")[1])
+        lowGroupIndex = hashTemp.get(lowIndex)["index"]
+        highGroupIndex = hashTemp.get(highIndex)["index"]
         if hashTemp.get(lowIndex)["index"] != hashTemp.get(highIndex)["index"]:
-            lowGroupIndex = hashTemp.get(lowIndex)["index"]
-            highGroupIndex = hashTemp.get(highIndex)["index"]
-            if (unsortedGroup.get(lowGroupIndex) != None and unsortedGroup.get(highGroupIndex) != None):
-                if(unsortedGroup[lowGroupIndex] <= 1 and unsortedGroup[highGroupIndex] <= 1):
-                    unsortedGroup[lowGroupIndex] = unsortedGroup[highGroupIndex] + unsortedGroup[lowGroupIndex]
-                    hashTemp.get(highIndex)['index'] = abs(lowGroupIndex)
-                    hashTemp.get(highIndex)['status'] = abs(hashTemp.get(highIndex)['status'])
-                    hashTemp.get(lowIndex)['status'] = abs(hashTemp.get(lowIndex)['status'])
-                    del unsortedGroup[highGroupIndex]
-                    continue
-                if (unsortedGroup[lowGroupIndex] > 1 and unsortedGroup[highGroupIndex] <= 1):
-                    unsortedGroup[lowGroupIndex] = unsortedGroup[highGroupIndex] + unsortedGroup[lowGroupIndex]
-                    hashTemp.get(highIndex)['index'] = abs(lowGroupIndex)
-                    hashTemp.get(highIndex)['status'] = abs(hashTemp.get(highIndex)['status'])
-                    del unsortedGroup[highGroupIndex]
-                    continue
-                if (unsortedGroup[lowGroupIndex] <= 1 and unsortedGroup[highGroupIndex] > 1):
-                    unsortedGroup[highGroupIndex] = unsortedGroup[highGroupIndex] + unsortedGroup[lowGroupIndex]
-                    hashTemp.get(lowIndex)['index'] = abs(highGroupIndex)
-                    hashTemp.get(lowIndex)['status'] = abs(hashTemp.get(lowIndex)['status'])
-                    del unsortedGroup[lowGroupIndex]
-                    continue
-                if (unsortedGroup[lowGroupIndex] > 1 and unsortedGroup[highGroupIndex] > 1):
-                    continue
-            flag = False
-            if flag:
-                pass
-            if (unsortedGroup.get(highGroupIndex) == None and unsortedGroup.get(lowGroupIndex) != None):
-                if hashTemp.get(lowIndex)['status'] == -1:
-                    hashTemp.get(lowIndex)['index'] = abs(highGroupIndex)
-                    hashTemp.get(lowIndex)['status'] = abs(hashTemp.get(lowIndex)['status'])
-                    del unsortedGroup[lowGroupIndex]
-                    continue
-                else:
-                    continue
-            if (unsortedGroup.get(lowGroupIndex) == None and unsortedGroup.get(highGroupIndex) != None):
-                # 2.2.1 high还是白
-                if hashTemp.get(highIndex)['index'] == -1:
-                    # print(222222222)
-                    hashTemp.get(highIndex)['status'] = abs(hashTemp.get(highIndex)['status'])
-                    hashTemp.get(highIndex)['index'] = abs(lowGroupIndex)
-                    del unsortedGroup[highGroupIndex]
-                    continue
-                # 不白
-                else:
-                    continue
-            # 双del
-            if (unsortedGroup.get(lowGroupIndex) == None and unsortedGroup.get(highGroupIndex) == None):
-                continue
+                    if (unsortedGroup.get(lowGroupIndex) != None and unsortedGroup.get(highGroupIndex) != None):
+                        if(unsortedGroup[lowGroupIndex] <= 1 and unsortedGroup[highGroupIndex] <= 1):
+                            unsortedGroup[lowGroupIndex] = unsortedGroup[highGroupIndex] + unsortedGroup[lowGroupIndex]
+                            hashTemp.get(highIndex)['index'] = abs(lowGroupIndex)
+                            hashTemp.get(highIndex)['status'] = abs(hashTemp.get(highIndex)['status'])
+                            hashTemp.get(lowIndex)['status'] = abs(hashTemp.get(lowIndex)['status'])
+                            del unsortedGroup[highGroupIndex]
+                            continue
+                        if (unsortedGroup[lowGroupIndex] > 1 and unsortedGroup[highGroupIndex] <= 1):
+                            unsortedGroup[lowGroupIndex] = unsortedGroup[highGroupIndex] + unsortedGroup[lowGroupIndex]
+                            hashTemp.get(highIndex)['index'] = abs(lowGroupIndex)
+                            hashTemp.get(highIndex)['status'] = abs(hashTemp.get(highIndex)['status'])
+                            del unsortedGroup[highGroupIndex]
+                            continue
+                        if (unsortedGroup[lowGroupIndex] <= 1 and unsortedGroup[highGroupIndex] > 1):
+                            unsortedGroup[highGroupIndex] = unsortedGroup[highGroupIndex] + unsortedGroup[lowGroupIndex]
+                            hashTemp.get(lowIndex)['index'] = abs(highGroupIndex)
+                            hashTemp.get(lowIndex)['status'] = abs(hashTemp.get(lowIndex)['status'])
+                            del unsortedGroup[lowGroupIndex]
+                            continue
+                        if (unsortedGroup[lowGroupIndex] > 1 and unsortedGroup[highGroupIndex] > 1):
+                            continue
+                    flag = False
+                    if flag:
+                        pass
+                    if (unsortedGroup.get(highGroupIndex) == None and unsortedGroup.get(lowGroupIndex) != None):
+                        if hashTemp.get(lowIndex)['status'] == -1:
+                            hashTemp.get(lowIndex)['index'] = abs(highGroupIndex)
+                            hashTemp.get(lowIndex)['status'] = abs(hashTemp.get(lowIndex)['status'])
+                            del unsortedGroup[lowGroupIndex]
+                            continue
+                        else:
+                            continue
+                    if (unsortedGroup.get(lowGroupIndex) == None and unsortedGroup.get(highGroupIndex) != None):
+                        # 2.2.1 high还是白
+                        if hashTemp.get(highIndex)['index'] == -1:
+                            hashTemp.get(highIndex)['status'] = abs(hashTemp.get(highIndex)['status'])
+                            hashTemp.get(highIndex)['index'] = abs(lowGroupIndex)
+                            del unsortedGroup[highGroupIndex]
+                            continue
+                        # 不白
+                        else:
+                            continue
+                    # 双del
+                    if (unsortedGroup.get(lowGroupIndex) == None and unsortedGroup.get(highGroupIndex) == None):
+                        if(unsortedGroup[lowGroupIndex] < 2 or unsortedGroup[highGroupIndex] < 2):
+                            if (unsortedGroup[lowGroupIndex] > unsortedGroup[highGroupIndex]):
+                                for index in allNodes["nodes"]:
+                                    if (index["index"] == highGroupIndex):
+                                        hashTemp.get(index["id"])["index"] = abs(lowGroupIndex)
+                            else:
+                                for index in allNodes["nodes"]:
+                                    if (index["index"] == lowGroupIndex):
+                                        hashTemp.get(index["id"])["index"] = abs(highGroupIndex)
+                        
+
+
+
+
         if len(unsortedGroup) <= 7:
-            # print(777777777)
-            break
-            '''版本plus'''
+            break 
+
     sortedGroup = sorted(unsortedGroup.items(), key=lambda group: group[1], reverse=True)
     topClusterCenterCount = 0
     for key, _ in sortedGroup:
@@ -201,6 +236,7 @@ def test_SortedData():
             return jsonify(result)
     except:
         return jsonify({})
+
 
 # @app.route('/api/Sorted')
 # def test_SortedData111():
