@@ -238,14 +238,14 @@ def test_SortedData():
         return jsonify({})
 
 
-# @app.route('/api/Sorted')
-# def test_SortedData111():
-#     try:  
-#         with open('files/sortedData/sorted.txt') as fi:
-#             print(fi)
-#             return fi
-#     except:
-#         return 0
+@app.route('/api/Sorted')
+def test_SortedData111():
+    try:  
+        with open('files/sortedData/sorted.txt') as fi:
+            print(fi)
+            return fi
+    except:
+        return 0
 
 
 class KeyValue:
