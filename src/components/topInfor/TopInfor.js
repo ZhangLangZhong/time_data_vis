@@ -28,7 +28,7 @@ export default function TopInfor() {
         return y + '-' + m + '-' + d + ' ' + h + ':' + minute;
     }
 
-    console.log("   TopInfor");
+    // console.log("   TopInfor");
 
     // 更新两次
     useEffect(() => {
