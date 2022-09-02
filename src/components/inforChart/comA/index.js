@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 
-class ComA extends Component {
+class ComA extends React.Component {
   render() {
     return <button onClick={this.handleClick}> + </button>
   }
@@ -9,6 +9,7 @@ class ComA extends Component {
 
 const handleClick = ()=>{
     console.log("ComA:",this.props)
+    this.props.sendAction()
 }
 
 const mapDispatchToProps = (dispatch)=>{

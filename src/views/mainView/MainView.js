@@ -6,8 +6,7 @@ import SmallHACChart from '../../components/smallHACChart/SmallHACChart'
 import MatrixChart from '../../components/matrixChart/MatrixChart'
 import InforChart from '../../components/inforChart/InforChart'
 import SortedChart from '../../components/SortedChart/SortedChart'
-import store from '../../redux/store'
-import {Provider} from 'react-redux'
+
 
 export default function mainView() {
     console.log(" mainView");
@@ -18,9 +17,7 @@ export default function mainView() {
         <TimeLineChart></TimeLineChart>
         <SmallHACChart></SmallHACChart>
         <MatrixChart></MatrixChart>
-        <Provider store={store}>
-          <InforChart></InforChart>
-        </Provider>
+        <InforChart></InforChart>
         <SortedChart></SortedChart>
     </div>
   )

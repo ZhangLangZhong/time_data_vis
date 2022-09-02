@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react'
 import './InforChart.css'
 import { sendAction } from '../../redux/action';
-import store from '../../redux/store';
-import ComA from './comA';
 
+import store from '../../redux/store';
+import { Provider } from 'react-redux'
+import ComA from './comA';
+import ComB from './comB';
 
 export default function InforChart() {
 
@@ -21,10 +23,14 @@ export default function InforChart() {
 
 
   return (
-    <div className='inforchart'>
-      {/* inforchart */}
-      <ComA></ComA>
-    </div>
+    <Provider store={store}>
+      <div className='inforchart'>
+        {/* inforchart */}
+        <ComA></ComA>
+        <ComB></ComB>
+      </div >
+    </Provider>
+    
 
 
   )
