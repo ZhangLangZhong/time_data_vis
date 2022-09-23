@@ -16,11 +16,8 @@ function ComponetA(props) {
     // },[])
 
     const handleClick = () => {
-        // console.log('coma',props.sendAction)
         props.sendAction()
     }
-
-    // console.log(connect)
 
     return (
         <button onClick={handleClick}> + </button>
@@ -39,8 +36,6 @@ const mapDispatchToProps = dispatch => {
         }
     }
 }
-
-
 
 // 第一个参数接收 第二个参数传递 
 export default connect(null, mapDispatchToProps)(ComponetA)

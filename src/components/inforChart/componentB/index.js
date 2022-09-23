@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 function ComponentB(props) {
   
   
+    console.log(props)
     return (
     <div>
       {props.count}

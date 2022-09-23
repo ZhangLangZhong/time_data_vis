@@ -1,3 +1,4 @@
+@import '~antd/dist/antd.css';
 .inforchart{
     position: absolute;
     top: 23px;
@@ -5,7 +6,7 @@
     /* background-color: aquamarine; */
     height: 70%;
     width: 17.42%;
-    border-style: solid;
-    border: 0.1%;
+    border-style: solid ;
+    border: 0.1% ;
     border-color: #646464;
 }
