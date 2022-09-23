@@ -232,7 +232,7 @@ export default function SortedChart() {
           }
         });
         // revert the data for the bottom of the stripe
-        meta.data.reverse();
+        meta.data.reverse(); 
         helpers.each(meta.data, function (point, index) {
           point._view.y += (yScale.getPixelForValue(widths[index]) - yScaleZeroPixel);
         });
