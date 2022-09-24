@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { Connect } from 'react-redux';
 import './InforChart.css'
 import PubSub from 'pubsub-js'
+import NodeAge from './NodeAge';
 export default function InforChart() {
 
   const [nodesNum,setnodesNum] = useState(115)
@@ -28,6 +29,8 @@ export default function InforChart() {
   const [edgeWidthControl,setedgeWidthControl] = useState(0)
   const [edgeOpacControl,setedgeOpacControl] = useState(0)
 
+  const [ischecked,setischecked] = useState(false)
+
 
 
 
@@ -37,6 +40,8 @@ export default function InforChart() {
     //   setnodesNum(nodesNum => store.getState('nodes_total'))
     //   setedgesNum(edgesNum => store.getState())
     // })
+    PubSub.publishSync('ischecked',ischecked)
+
     PubSub.subscribe('nodesNum',(msg,data)=>{
       setnodesNum(data.length)
     })
@@ -59,7 +64,8 @@ export default function InforChart() {
   }
 
   const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
+    // console.log(`checked = ${e.target.checked}`);
+    setischecked(!ischecked)
   };
 
   const items = [
@@ -107,7 +113,13 @@ export default function InforChart() {
         mode="inline"
         items={items}
       />
+
+
+
+      <NodeAge/>
+
     </div >
+    
   )
 }
 
