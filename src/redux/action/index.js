@@ -1,9 +1,14 @@
-const sendAction = ()=>{
 
+
+
+const sendAction = (type,state)=>{
+    // console.log(state)
     return {
-        type:'send_type',
-        value:'state'
+        type:type,
+        value:state
     }
 }
+
+
 
 module.exports = {sendAction};

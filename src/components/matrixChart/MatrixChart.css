@@ -3,7 +3,7 @@
     top: 36.8%;
     left: 71.2%;
     /* background-color: aquamarine; */
-    height: 34.95%;
+    height: 34.95% !important;
     width: 28.3% !important;
     border-style: solid;
     border: 0.1%;
@@ -15,7 +15,7 @@
     /* top: 36.8%; */
     /* left: 71.2%; */
     /* background-color: aquamarine; */
-    height: 99%;
+    height: 99% !important;
     width: 99% !important;
     /* border-style: solid; */
     /* border: 0.1%; */

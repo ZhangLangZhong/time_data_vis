@@ -29,8 +29,8 @@ export default function MatrixChart() {
     var chartDom = document.getElementById('matrixChartGraph');
     var myChart = echarts.init(chartDom);
 
-    console.log(indexInfoNums);
-    console.log(indexXYNums);
+    // console.log(indexInfoNums);
+    // console.log(indexXYNums);
     var changeIndex = []
     for (let index = 0; index < indexXYNums.length; index++) {
       // const element = array[index];
@@ -39,7 +39,7 @@ export default function MatrixChart() {
       let value = {"index":index,"data":indexXYNums[index]}
       changeIndex.push(value)
     }
-    console.log(changeIndex);
+    // console.log(changeIndex);
 
     let hashchangeIndex = new HashTable()
     changeIndex.map((d)=>{

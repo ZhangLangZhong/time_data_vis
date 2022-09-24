@@ -2,8 +2,13 @@ import React, { useEffect, useState, useContext, useCallback, useRef, useReducer
 import { Button } from 'antd';
 import axios from 'axios'
 import PubSub from 'pubsub-js'
+import { CaretRightOutlined } from '@ant-design/icons';
 import * as d3 from 'd3'
 import useSyncCallback from '../../../MyHooks/useSyncCallback';
+import { style } from 'd3';
+import store from '../../../redux/store';
+import { sendAction } from '../../../redux/action';
+// import { connect } from 'react-redux';
 // import useSyncState from '../../../MyHooks/useSyncState';
 
 export default function DynamicChart({ FDT, NLT }) {
@@ -25,11 +30,17 @@ export default function DynamicChart({ FDT, NLT }) {
     const [perLayoutNodes, setperLayoutNodes] = useState([])
     const [addNode, setaddNode] = useState([])
     
+    const [isplay,setisplay] = useState(true)
+    // const [size, setSize] = useState('large');
+
     let HashNodes = new HashTable()
     // var nowData = null
 
     // 点击button执行定时器请求数据
     useEffect(() => {
+        // console.log(isplay)
+        // console.log(props)
+        // props.sendAction()
         console.log("       DynamicChart useEffect");
         PubSub.subscribe("initialTimeData", (msg, data) => {
             setinit_data_line(data)
@@ -38,6 +49,7 @@ export default function DynamicChart({ FDT, NLT }) {
             setpreData(preData => data)
         })
         if (buttonOpen) {
+            setisplay('stop')
             const timer = setInterval(() => {
                 // console.log("           setInterval");
                 setnowTimeData(nowTimeData => nowTimeData + 1)
@@ -45,6 +57,8 @@ export default function DynamicChart({ FDT, NLT }) {
                 axiosInit()
             }, 2200)
             return () => clearInterval(timer)
+        }else{
+            setisplay('play')
         }
     }, [buttonOpen])
 
@@ -72,12 +86,23 @@ export default function DynamicChart({ FDT, NLT }) {
             setstartBool(startBool => false)
             setinitLayoutNodes(initLayoutNodes => countArray(tarSou.links))
         }
+
+
+        PubSub.publishSync('nodesNum',initLayoutNodes)
+        // console.log(initLayoutNodes.length)
+        // const actionNodesNums = sendAction('nodes_total',initLayoutNodes.length)
+        // store.dispatch(actionNodesNums)
         // funcInitLayoutNode()
         drawLayoutChart()
     })
 
     const drawLayoutChart = useSyncCallback(() => {
         setnowData(nowData => transform(tarSou))
+        // console.log(nowData)
+        
+        PubSub.publishSync('edgesNum',nowData)
+        // const actionEdgesNums = sendAction('edges_total',nowData.length)
+        // store.dispatch(actionEdgesNums)
         setlayoutNodes(layoutNodes=>initLayoutNodes)
         drawLayoutChart2()
     })
@@ -850,9 +875,22 @@ export default function DynamicChart({ FDT, NLT }) {
     return (
         <div>
             <div className='playButton'>
-                <Button type="primary" onClick={() => setbuttonOpen(!buttonOpen)}>Primary111 </Button>
+                <Button type="dashed" onClick={() => (setbuttonOpen(!buttonOpen)) } >{isplay}</Button>
                 {/* <Button type="primary" onClick={() => setnowTimeData({ type: 'COUNT_INCREMENT' })}>aaa </Button> */}
             </div>
         </div>
     )
 }
+
+const mapDispatchToProps = (dispatch)=>{
+    return {
+        sendAction:()=>{
+            dispatch({
+                type:'nodes_total'
+            })
+        }
+    }
+}
+
+
+// export default connect(null,mapDispatchToProps)(DynamicChart)
