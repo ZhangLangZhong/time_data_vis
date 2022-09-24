@@ -38,7 +38,7 @@ export default function InforChart() {
     getItem('布局属性', 'sub4', <AppstoreOutlined />, [
       getItem(<Input addonBefore='节点总量' defaultValue="mysite" />),
       getItem(<Input addonBefore='边总量' defaultValue="mysite" />),
-      getItem('节点ID', '88'),
+      getItem(<Input addonBefore='节点ID' defaultValue="mysite" />),
       getItem('节点度', '123'),
       // getItem('Submenu', 'sub5', null, [
       //   getItem('Option 11', '11'),
