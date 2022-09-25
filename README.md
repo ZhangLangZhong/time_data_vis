@@ -5,6 +5,25 @@
 在保留动态图心理基础后，通过HAC边限制度排序聚类算法提取了视图的主干特征，并通过LDA
 降维社区伪节点创造面积碰撞河流图生成社区节点的降维显示。
 
+#项目环境
+
+<li>python 3.8</li>
+<li>d3.v3.js</li>
+<li>echarts 5.3.3</li>
+<li>react 18.2</li>
+<li>redux-router 5.3</li>
+<li>redux 4.2.0</li>
+
+项目启动:
+<li>python3 time_VIS.py</li>
+<li>npm start</li>
+
+浏览器中打开
+<li>http://localhost:3000/</li>
+
+
+#项目效果图
+
     time-data-Vis效果图
 ![Image text](https://github.com/ZhangLangZhong/time_data_vis/blob/master/src/assets/image/1.PNG)
 
