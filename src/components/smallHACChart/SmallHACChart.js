@@ -148,7 +148,7 @@ export default function SmallHACChart() {
         .data(centerNodes[i].indexLinks).enter()
         .append("line")
         .attr("class", "link")
-        .attr("stroke", 0.5)
+        // .attr("stroke", 10)
         .attr("x1", centerNodes[i].x)
         .attr("y1", centerNodes[i].y)
         .attr("x2", d => {
@@ -158,6 +158,10 @@ export default function SmallHACChart() {
           return HashFinalNodes.getValue(d).y
         })
         .attr("stroke", "gray")
+        .attr("stroke-width",function(d){
+          // console.log(HashFinalNodes.getValue(d))
+          return 0.5 + 0.5*HashFinalNodes.getValue(d).indexLinks.length
+        })
     }
 
     svg.append("g")
@@ -166,7 +170,10 @@ export default function SmallHACChart() {
       .data(centerNodes).enter()
       .append("circle")
       .attr("class", "node")
-      .attr("r", 5)
+      .attr("r", function(d){
+        // console.log(d)
+        return 5 + 0.8*d.indexLinks.length
+      })
       .attr("cx", function (d) {
         return d.x;
       })
@@ -178,6 +185,7 @@ export default function SmallHACChart() {
       })
       .attr("fill", "blue")
       .attr("stroke", "blue")
+
   }
 
   function indexAlreadyHad(indexNum, allIndex) {

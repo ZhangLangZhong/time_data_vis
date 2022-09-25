@@ -3,6 +3,7 @@ import { DownloadOutlined } from '@ant-design/icons';
 import { Button, Radio, Tabs, Menu,Input,Checkbox   } from 'antd';
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 
+import useSyncCallback from '../../MyHooks/useSyncCallback';
 import { sendAction } from '../../redux/action';
 import store from '../../redux/store';
 import { Provider } from 'react-redux';
@@ -12,6 +13,7 @@ import PubSub from 'pubsub-js'
 import NodeAge from './NodeAge';
 import NodeSocial from './NodeSocial';
 import NodeDegree from './NodeDegree';
+import NodeAdress from './NodeAdress';
 export default function InforChart() {
 
   const [nodesNum,setnodesNum] = useState(115)
@@ -32,7 +34,7 @@ export default function InforChart() {
   const [edgeOpacControl,setedgeOpacControl] = useState(0)
 
   const [ischecked,setischecked] = useState(false)
-
+  const [tempnode,settempnode] = useState([])
 
 
 
@@ -50,10 +52,29 @@ export default function InforChart() {
     PubSub.subscribe('edgesNum',(msg,data)=>{
       setedgesNum(data.length)
     })
- 
-  },[])
+    PubSub.subscribe('nowNode',(msg,data)=>{
+      setnodeid(data.id)
+      setnodeAge(data.age)
+      setdegreeCenter('2.26e-03')
+      setnearCenter('2.26e-03')
+      // setnodeSocial(data.subs)
+      setnodeSizeControl(5 + 0.4*(data.age-1))
+      setnodeAgeControl(data.age)
+      setnodeOpacityControl(1)
+      setedgeWidthControl(2)
+      setedgeOpacControl(1)
+    })
+    PubSub.subscribe('hacNodes',(msg,data)=>{
+      settempnode(data)
+    })
+    for(let item of tempnode){
+        if(item.id == nodeid ){
+            setnodeSocial(Math.abs(item.index))
+        }
+    }
 
-  
+ 
+  },[nodeid])
 
   function getItem(label, key, icon, children, type) {
     return {
@@ -119,6 +140,7 @@ export default function InforChart() {
         {ischecked == true?<NodeAge/>:null}
         {ischecked == true?<NodeSocial/>:null}
         {ischecked == true?<NodeDegree/>:null}
+        {ischecked == true?<NodeAdress/>:null}
 
  
 

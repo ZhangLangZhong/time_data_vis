@@ -31,6 +31,7 @@ export default function DynamicChart({ FDT, NLT }) {
     const [addNode, setaddNode] = useState([])
     
     const [isplay,setisplay] = useState(true)
+    const [nowNodeSocial,setnowNodeSocial] = useState([])
     // const [size, setSize] = useState('large');
 
     let HashNodes = new HashTable()
@@ -696,7 +697,10 @@ export default function DynamicChart({ FDT, NLT }) {
             .data(layoutNodes).enter()
             .append("circle")
             .attr("class", "node")
-            .attr("r", 5)
+            .attr("r", function(d){
+                // console.log(d.age)
+                return 5 + 0.4*(d.age-1)
+            })
             .attr("cx", function (d) {
                 return d.x;
             })
@@ -710,6 +714,17 @@ export default function DynamicChart({ FDT, NLT }) {
                 return compute(linear(d.age))
             })
             .attr("stroke", "gray")
+            .on('click',function(d){
+                console.log(d)
+               
+                // console.log(nowNodeSocial)
+                // PubSub.publishSync('nowsocial',)
+                PubSub.publishSync('nowNode',d)
+              })
+
+        
+
+        
     }
 
     function idToIndex(layoutNodes) {
