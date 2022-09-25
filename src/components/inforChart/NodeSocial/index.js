@@ -3,7 +3,7 @@ import * as echarts from 'echarts'
 import PubSub from 'pubsub-js'
 import './index.css'
 
-export default function NodeAge() {
+export default function NodeSocial() {
 
 
     useEffect(()=>{
@@ -12,7 +12,7 @@ export default function NodeAge() {
 
 
     function drawLine(){
-        var myChart = echarts.init(document.getElementById('nodeAge'));
+        var myChart = echarts.init(document.getElementById('nodeSocial'));
         // console.log(myChart)
         const option = {
             xAxis: {
@@ -21,7 +21,7 @@ export default function NodeAge() {
             },
             title: {
                 left: 'left',
-                text: '节点能级',
+                text: '节点社区',
                 textStyle:{
                     fontSize:13,
                 },
@@ -38,7 +38,7 @@ export default function NodeAge() {
             },
             series: [
                 {
-                    data: [0, 0, 1, 1, 2, 2, 3],
+                    data: [2, 2, 2, 2, 2, 3, 3],
                     type: 'line'
                 }
             ]
@@ -48,7 +48,7 @@ export default function NodeAge() {
     }
 
     return (
-        <div id='nodeAge'>
+        <div id='nodeSocial'>
             {/* <h2>节点社区</h2> */}
         </div>
     )

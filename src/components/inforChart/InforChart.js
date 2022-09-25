@@ -10,6 +10,8 @@ import { Connect } from 'react-redux';
 import './InforChart.css'
 import PubSub from 'pubsub-js'
 import NodeAge from './NodeAge';
+import NodeSocial from './NodeSocial';
+import NodeDegree from './NodeDegree';
 export default function InforChart() {
 
   const [nodesNum,setnodesNum] = useState(115)
@@ -114,9 +116,11 @@ export default function InforChart() {
         items={items}
       />
 
+        {ischecked == true?<NodeAge/>:null}
+        {ischecked == true?<NodeSocial/>:null}
+        {ischecked == true?<NodeDegree/>:null}
 
-
-      <NodeAge/>
+ 
 
     </div >
     
