@@ -21,6 +21,12 @@
 <h1>浏览器中打开</h1>
 <li>http://localhost:3000/</li>
 
+<h1>算法支撑</h1>
+<li>节点能级变化算法</li>
+<li>凝聚层次聚类</li>
+<li>LDA降维算法</li>
+<li>节点新增限制算法</li>
+<li>附加边新增限制算法</li>
 
 <h1>项目效果图<h1>
 
@@ -48,13 +54,12 @@
 ![Image text](https://github.com/ZhangLangZhong/time_data_vis/blob/master/src/assets/image/8.PNG)
 
 
-# 主视图算法
-    节点使用度排序标签传播分类
-![Image text](https://github.com/ZhangLangZhong/time_data_vis/blob/master/src/assets/image/main/1.PNG)
+<h2>节点信息</h2>
 
-    附加边新增算法
-![Image text](https://github.com/ZhangLangZhong/time_data_vis/blob/master/src/assets/image/main/2.PNG)
+![Image text](https://github.com/ZhangLangZhong/time_data_vis/blob/master/src/assets/image/4.PNG)
+![Image text](https://github.com/ZhangLangZhong/time_data_vis/blob/master/src/assets/image/5.PNG)
 
-    节点新增算法
-![Image text](https://github.com/ZhangLangZhong/time_data_vis/blob/master/src/assets/image/main/3.PNG)
+<h2>单个节点的时序数据特征</h2>
+
+![Image text](https://github.com/ZhangLangZhong/time_data_vis/blob/master/src/assets/image/6.PNG)
 
