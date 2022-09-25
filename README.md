@@ -4,7 +4,7 @@
 
     主图设计
 
-![Image text](https://github.com/ZhangLangZhong/time_data_vis/blob/master/src/assets/image/2.PNG);
+![Image text](https://github.com/ZhangLangZhong/time_data_vis/blob/master/src/assets/image/2.PNG)
 
 
     HACLinkD聚类图
