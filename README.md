@@ -32,7 +32,7 @@
 
 <h2>效果图</h2>
 
-![Image text](https://github.com/ZhangLangZhong/time_data_vis/blob/master/src/assets/image/1.PNG)
+![Image text](https://github.com/ZhangLangZhong/time_data_vis/blob/master/src/assets/image/9.PNG)
 
 <h2>主图设计</h2>
 
