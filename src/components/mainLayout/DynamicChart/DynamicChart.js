@@ -3,9 +3,10 @@ import { Button } from 'antd';
 import axios from 'axios'
 import PubSub from 'pubsub-js'
 import { CaretRightOutlined } from '@ant-design/icons';
+// import * as d3 from 'd3'
 import * as d3 from 'd3'
 import useSyncCallback from '../../../MyHooks/useSyncCallback';
-import { style } from 'd3';
+// import { style } from 'd3';
 import store from '../../../redux/store';
 import { sendAction } from '../../../redux/action';
 // import { connect } from 'react-redux';
@@ -660,7 +661,8 @@ export default function DynamicChart({ FDT, NLT }) {
         var a = d3.rgb(255,0,0);	//红色
         var b = d3.rgb(144,202,235);	//绿色
         var compute = d3.interpolate(a,b);
-        var linear = d3.scale.linear()
+        // var linear = d3.scale.linear()
+        var linear = d3.scaleLinear()
         .domain([1,10])
         .range([0,1]);
 

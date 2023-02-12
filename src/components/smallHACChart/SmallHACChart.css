@@ -1,4 +1,4 @@
-.smallChart{
+.smallChart {
     position: absolute;
     top: 23px;
     left: 71.2%;
@@ -9,3 +9,16 @@
     border: 0.1%;
     border-color: #646464;
 }
+
+.area,
+.area2 {
+    fill: #88e29e;
+    fill-opacity: 0.5;
+    stroke: #B2DF8A;
+}
+/* .node {
+    fill: #3c1883;
+    fill-opacity: 0.5;
+    stroke: white;
+    stroke-opacity: 0.8;
+} */

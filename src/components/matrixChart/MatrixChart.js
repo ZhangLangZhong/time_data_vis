@@ -243,7 +243,7 @@ export default function MatrixChart() {
   })
 
   const finalSend = useSyncCallback(() => {
-    console.log(linksArray);
+    // console.log(linksArray);
     // console.log(nowLinks);
     PubSub.publishSync('linkssssArray', linksArray)
     setlinksArray(linksArray=>[])

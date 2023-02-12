@@ -8,7 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
     "chart.js": "^2.1.6",
-    "d3": "^3.5.17",
+    "d3": "^4.2.8",
     "echarts": "^5.3.3",
     "flask": "^0.2.10",
     "glom": "^1.0.0",

@@ -80,13 +80,20 @@ function d3layout(data, width, height) {
             .attr("width", width)
             .attr("height", height);
 
-        this.force = d3.layout.force()
-            .nodes(nodes)
-            .links(links)
-                // .linkDistance(0.01)
-            .size([width, height])
+        // v3 版本
+        // this.force = d3.layout.force()
+        //     .nodes(nodes)
+        //     .links(links)
+        //         // .linkDistance(0.01)
+        //     .size([width, height])
         
-        this.force.start();
+        // v4版本
+        this.force = d3.forceSimulation(nodes)
+            .force('link',d3.forceLink(links))
+            .force("center", d3.forceCenter(width / 2, height / 2))
+            .force("collide", d3.forceCollide(15).iterations(8));
+            
+        this.force.restart();
         
         var svg_links = svg.selectAll(".link")
             .data(links)
