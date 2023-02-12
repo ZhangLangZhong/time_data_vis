@@ -2,12 +2,17 @@ import React, { useEffect, useState } from 'react'
 import PubSub from 'pubsub-js'
 import axios from 'axios'
 import * as d3 from 'd3'
+import useSyncCallback from '../../MyHooks/useSyncCallback'
 import './SmallHACChart.css'
 
 export default function SmallHACChart() {
 
   const [MatrixInit, setMatrixInit] = useState([])
   const [axhacNodes,setaxhacNodes] = useState([])
+  const [relatLinks,setrelatLinks] = useState([])
+  const [centerNodesState,setcenterNodesState] = useState([])
+  const [HashFinalNodesState,setHashFinalNodesState] = useState([])
+
   console.log("smallChart");
   useEffect(() => {
     // console.log("smallChart  useEffect");
@@ -70,6 +75,8 @@ export default function SmallHACChart() {
     let centerNodes = []
 
     PubSub.publishSync('socialHac',socialHac)
+    // console.log(hacNodes);
+    // 社区内部有几个点
     // console.log(socialHac);
 
     let indexInfo = []
@@ -102,7 +109,10 @@ export default function SmallHACChart() {
       })
 
       indexXY.push(d.index)
+
+      // console.log(indexNum)
       for(let index in getEleNums(indexNum)){
+        // console.log(index);
         let indexValue = [d.index,Number(index),getEleNums(indexNum)[index]]
         indexInfo.push(indexValue)
       }
@@ -124,9 +134,35 @@ export default function SmallHACChart() {
     centerNodes.forEach(d => {
       HashFinalNodes.add(d.index, d)
     })
+    // console.log(indexInfo);
     // console.log(centerNodes);
+    // console.log(HashFinalNodes);
+
+
+    PubSub.subscribe('linkssssArray',(msg,data)=>{
+      setrelatLinks(relatLinks=>data)
+    })
+
+
+
+    // console.log('1234141241',relatLinks)
+
+    // const tempdraw = useSyncCallback(() => {
+    //   console.log(relatLinks)
+    // })
+    tempdraw()
+    setcenterNodesState(centerNodesState=>centerNodes)
+    setHashFinalNodesState(HashFinalNodesState=>HashFinalNodes)
     drawingHACGraph(centerNodes, HashFinalNodes)
   }
+
+  const tempdraw = useSyncCallback(() => {
+    // console.log('1234141241',relatLinks)
+    drawingHACGraph(centerNodesState, HashFinalNodesState)
+  })
+
+  
+  
 
   function drawingHACGraph(centerNodes, HashFinalNodes) {
     d3.select(".smallChart").select("svg").remove();

@@ -11,6 +11,7 @@
     "d3": "^3.5.17",
     "echarts": "^5.3.3",
     "flask": "^0.2.10",
+    "glom": "^1.0.0",
     "highcharts": "^10.2.0",
     "highcharts-more": "^0.1.7",
     "pandas": "^0.0.3",
