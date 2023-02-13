@@ -154,7 +154,9 @@ export default function SmallHACChart() {
     tempdraw()
     setcenterNodesState(centerNodesState => centerNodes)
     setHashFinalNodesState(HashFinalNodesState => HashFinalNodes)
-    drawingHACGraph(centerNodes, HashFinalNodes)
+    // drawingHACGraph(centerNodes, HashFinalNodes)
+    let uniqueEdge = removeDuplicateEdges(relatLinks)
+    setrelatLinks(relatLinks => uniqueEdge)
   }
 
   const tempdraw = useSyncCallback(() => {
@@ -166,73 +168,212 @@ export default function SmallHACChart() {
   })
 
 
-
-
+  // 新版本
   function drawingHACGraph(centerNodes, HashFinalNodes, rectLinks) {
     d3.select(".smallChart").select("svg").remove();
-
-    // 原版
     let getSVG = document.getElementsByClassName('smallChart')
     let width = getSVG[0].clientWidth
     let height = getSVG[0].clientHeight
-  
-    //原版 
     var svg = d3.select(".smallChart")
       .append("svg")
       .attr("width", width)
       .attr("height", height)
 
-      // 原版
-    for (let i = 0; i < centerNodes.length; i++) {
-      svg.append("g")
-        .attr("class", "links")
-        .selectAll("line")
-        .data(centerNodes[i].indexLinks).enter()
-        .append("line")
-        .attr("class", "link")
-        // .attr("stroke", 10)
-        .attr("x1", centerNodes[i].x)
-        .attr("y1", centerNodes[i].y)
-        .attr("x2", d => {
-          return HashFinalNodes.getValue(d).x
-        })
-        .attr("y2", d => {
-          return HashFinalNodes.getValue(d).y
-        })
-        .attr("stroke", "gray")
-        .attr("stroke-width", function (d) {
-          // console.log(HashFinalNodes.getValue(d))
-          return 0.5 + 0.5 * HashFinalNodes.getValue(d).indexLinks.length
-        })
-    }
+    var seq_max = 10;
+    var seq_length = 10;
+    var radius = 5
+    var edge = 2
+    var linkDistance = 5
+    var manyBodyStrength = -30
+
+    var area_x_scale;
+    var area, area2;
+
+    // var forceCenter = d3.forceCenter(width / 2, height / 2);
+    // var forceManyBody = d3.forceManyBody(manyBodyStrength);
+    // var simulation = d3.forceSimulation();
+    // simulation.force("charge", forceManyBody)
+    //   .force("link", forceLink)
+    //   .force("center", forceCenter);
+
+    // var forceLink = d3.forceLink();
+    var hashLinkNode = new HashTable()
+    // console.log(centerNodes);
+    // console.log(centerNodesState);
+    // console.log(rectLinks);
+    centerNodes.forEach(d => {
+      hashLinkNode.add(d.index, d)
+    })
+    // forceLink.distance(function (d) {
+    //   return linkDistance;
+    // });
+    var x = d3.scaleBand().rangeRound([0, linkDistance - radius * 2]).padding(0.1),
+      y = d3.scaleLinear().rangeRound([10, 0]);
+    x.domain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    y.domain([0, 10]);
 
 
-    
-    svg.append("g")
-      .attr("class", "nodes")
-    //   // 原版
-      .selectAll("circle")
-      // .selectAll(".nodes")
-      .data(centerNodes).enter()
-      .append("circle")
-      .attr("class", "node")
-      .attr("r", function (d) {
-        // console.log(d)
-        return 5 + 0.8 * d.indexLinks.length
-      })
-      .attr("cx", function (d) {
-        return d.x;
-      })
-      .attr("cy", function (d) {
-        return d.y;
-      })
-      .attr("id", function (d) {
-        return d.id;
-      })
-      .attr("fill", "blue")
-      .attr("stroke", "blue")
-    
+
+    var ticked = function () {
+      links
+        .attr("x1", function (d) {
+          // console.log(d);
+          return hashLinkNode.getValue(d.tar).x
+        })
+        .attr("y1", d => hashLinkNode.getValue(d.tar).y)
+        .attr("x2", d => hashLinkNode.getValue(d.sou).x)
+        .attr("y2", d => hashLinkNode.getValue(d.sou).y);
+
+      nodes
+        .attr("cx", function (d) {
+          // console.log(d);
+          return d.x
+        })
+        .attr("cy", d => d.y);
+
+      path.attr("transform", function (d, i) {
+        var source = hashLinkNode.getValue(d.tar)
+        var target = hashLinkNode.getValue(d.sou)
+        var radians = Math.atan2(-(target.y - source.y), (target.x - source.x));
+        var degrees = radians * 180 / Math.PI;
+        return 'translate(' + source.x + ',' + source.y + ') rotate(' + -degrees + ') translate(' + (radius / 1 + edge / 1) + ',' + (-seq_max - 2) + ')';
+      });
+    };
+
+    var links = svg.selectAll(".linkA")
+      .data(rectLinks)
+      .enter()
+      .insert("line")
+      .attr("class", "linkA");
+
+    var nodes = svg.selectAll(".nodeA")
+      .data(centerNodes)
+      .enter()
+      .append("circle", "svg")
+      .attr("class", "nodeA")
+      .attr("r", radius)
+      .style('stroke-width', edge / 1)
+
+    // simulation.nodes(centerNodes);
+    // forceLink.links(rectLinks);
+
+    var path = svg
+      .selectAll(".area")
+      .data(rectLinks)
+      .enter()
+      .append('g')
+      .attr("class", "area")
+      .each(function (d, i) {
+
+        var distance = additions(hashLinkNode.getValue(d.tar), hashLinkNode.getValue(d.sou))
+        var longs = d.val.length
+        // console.log(longs);
+        var theDis = distance / (longs + 1)
+
+        var x = d3.scaleBand().rangeRound([0, distance]).padding(0.1),
+          y = d3.scaleLinear().rangeRound([10, 0]);
+        x.domain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+        y.domain([0, 10]);
+
+        d3.select(this).
+          selectAll('.rect')
+          .data(d.val)
+          .enter()
+          .insert('rect')
+          .attr('class', 'rect')
+          .attr('x', function (d, i) {
+            return x(i);
+          })
+          .attr('y', function (d, i) {
+            return y(d);
+          })
+          .attr("width", x.bandwidth())
+          .attr("height", function (d) {
+            return 10 - y(d);
+          });
+      });
+    // simulation.on("tick", ticked);
+    ticked()
+
+
   }
+
+  function additions(A, B) {
+    // console.log((A.x-B.x)(A.x-B.x));
+    return Math.sqrt((A.x - B.x) * (A.x - B.x) + (A.y - B.y) * (A.y - B.y))
+  }
+  // 老版本 2.12
+  // function drawingHACGraph(centerNodes, HashFinalNodes, rectLinks) {
+  //   d3.select(".smallChart").select("svg").remove();
+
+  //   // 原版
+  //   let getSVG = document.getElementsByClassName('smallChart')
+  //   let width = getSVG[0].clientWidth
+  //   let height = getSVG[0].clientHeight
+
+  //   console.log(centerNodes);
+
+  //   //原版 
+  //   var svg = d3.select(".smallChart")
+  //     .append("svg")
+  //     .attr("width", width)
+  //     .attr("height", height)
+
+
+  //     console.log(centerNodes);
+  //     console.log(rectLinks);
+
+  //     // 原版
+  //   for (let i = 0; i < centerNodes.length; i++) {
+  //     svg.append("g")
+  //       .attr("class", "links")
+  //       .selectAll("line")
+  //       .data(centerNodes[i].indexLinks).enter()
+  //       .append("line")
+  //       .attr("class", "link")
+  //       // .attr("stroke", 10)
+  //       .attr("x1", centerNodes[i].x)
+  //       .attr("y1", centerNodes[i].y)
+  //       .attr("x2", d => {
+  //         return HashFinalNodes.getValue(d).x
+  //       })
+  //       .attr("y2", d => {
+  //         return HashFinalNodes.getValue(d).y
+  //       })
+  //       .attr("stroke", "gray")
+  //       .attr("stroke-width", function (d) {
+  //         // console.log(HashFinalNodes.getValue(d))
+  //         return 0.5 + 0.5 * HashFinalNodes.getValue(d).indexLinks.length
+  //       })
+  //   }
+
+
+
+  //   svg.append("g")
+  //     .attr("class", "nodes")
+  //   //   // 原版
+  //     .selectAll("circle")
+  //     // .selectAll(".nodes")
+  //     .data(centerNodes).enter()
+  //     .append("circle")
+  //     .attr("class", "node")
+  //     .attr("r", function (d) {
+  //       // console.log(d)
+  //       return 5 + 0.8 * d.indexLinks.length
+  //     })
+  //     .attr("cx", function (d) {
+  //       return d.x;
+  //     })
+  //     .attr("cy", function (d) {
+  //       return d.y;
+  //     })
+  //     .attr("id", function (d) {
+  //       return d.id;
+  //     })
+  //     .attr("fill", "blue")
+  //     .attr("stroke", "blue")
+
+  // }
 
   function indexAlreadyHad(indexNum, allIndex) {
 
@@ -316,6 +457,23 @@ export default function SmallHACChart() {
       size = 0;
       entry = new Object();
     }
+  }
+
+  function removeDuplicateEdges(edges) {
+    const uniqueEdges = [];
+    const edgeMap = new Map();
+
+    for (const edge of edges) {
+      const edgeKey = `${edge.tar}-${edge.sou}`;
+      const edgeKey2 = `${edge.sou}-${edge.tar}`;
+      if (!edgeMap.has(edgeKey)) {
+        edgeMap.set(edgeKey, true);
+        edgeMap.set(edgeKey2, true);
+        uniqueEdges.push(edge);
+      }
+    }
+
+    return uniqueEdges;
   }
 
   return (
