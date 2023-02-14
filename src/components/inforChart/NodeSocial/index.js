@@ -17,11 +17,11 @@ export default function NodeSocial() {
         const option = {
             xAxis: {
                 type: 'category',
-                data: ['4.50', '4.55', '5.00', '5.05', '5.10', '5.15', '5.20']
+                data: ['step9', 'step10', 'step11', 'step12', 'step13', 'step14', 'step15','step16','step17','step18']
             },
             title: {
                 left: 'left',
-                text: '节点社区',
+                text: 'cluster move',
                 textStyle:{
                     fontSize:13,
                 },
@@ -38,7 +38,7 @@ export default function NodeSocial() {
             },
             series: [
                 {
-                    data: [2, 2, 2, 2, 2, 3, 3],
+                    data: [0.2,0.3,0.2,0.3,0.4,0.3,0.2,0.1,0.1],
                     type: 'line'
                 }
             ]

@@ -124,7 +124,7 @@ export default function MatrixChart() {
 
         top: '30%',
         right: '3%',
-        text: ['高', '低'],
+        text: ['high', 'low'],
 
         inRange: {
           color: ['#FF9966', '#60BDCB', '#ff2121'],

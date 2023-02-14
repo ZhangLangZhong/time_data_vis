@@ -17,11 +17,11 @@ export default function NodeAdress() {
         const option = {
             xAxis: {
                 type: 'category',
-                data: ['4.50', '4.55', '5.00', '5.05', '5.10', '5.15', '5.20']
+                data: ['step9', 'step10', 'step11', 'step12', 'step13', 'step14', 'step15','step16','step17','step18']
             },
             title: {
                 left: 'left',
-                text: '节点位置变化',
+                text: 'Model stability',
                 textStyle:{
                     fontSize:13,
                 },
@@ -38,7 +38,7 @@ export default function NodeAdress() {
             },
             series: [
                 {
-                    data: [7.5, 3.1, 8.6, 9.5, 6.8, 7.4, 5.1],
+                    data: [0.46, 0.49, 0.53,0.48, 0.59,0.42, 0.45,0.42,0.49,0.41],
                     type: 'line'
                 }
             ]

@@ -69,17 +69,22 @@ export default function SortedChart() {
       }
       let widthNow = max - min
 
-      let r = Math.round(Math.random()*255);
-      let g = Math.round(Math.random()*255);
-      let b = Math.round(Math.random()*255);
+      let r = Math.floor(Math.random() * 80);
+      // let g = Math.round(Math.random()*255);
+      let g = Math.floor(Math.random() * 25)+120;
+      let b = Math.floor(Math.random() * 25)+150;
       
+      // console.log(r);
+      // console.log(g)
+      // console.log(b)
 
       let value = {
         label: labelNow,
         fill: fillNow,
         data: [dataNow],
         width: [widthNow],
-        backgroundColor: "rgba("+r+","+g+","+b+",0.4)"
+        // backgroundColor: "rgba("+r+","+g+","+b+",0.4)"
+        backgroundColor: "rgba("+r+","+g+","+b+",0.55)"
       }
       datasetsDATA.push(value)
     })

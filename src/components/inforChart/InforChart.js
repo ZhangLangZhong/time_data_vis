@@ -55,8 +55,9 @@ export default function InforChart() {
     PubSub.subscribe('nowNode',(msg,data)=>{
       setnodeid(data.id)
       setnodeAge(data.age)
-      setdegreeCenter('2.26e-03')
-      setnearCenter('2.26e-03')
+      setdegreeCenter('2.49e-02')
+      setnearCenter('1.81e-02')
+      setnodespecial('1.01e-17')
       // setnodeSocial(data.subs)
       setnodeSizeControl(5 + 0.4*(data.age-1))
       setnodeAgeControl(data.age)
@@ -92,29 +93,29 @@ export default function InforChart() {
   };
 
   const items = [
-    getItem('布局控制', 'sub1', <SettingOutlined  />, [
-      getItem('节点', 'sub2', null, [
-        getItem(<Input addonBefore='节点尺寸' defaultValue={nodeSizeControl} value={nodeSizeControl} />),
-        getItem(<Input addonBefore='节点透明度' defaultValue={nodeOpacityControl} value={nodeOpacityControl} />),
-        getItem(<Input addonBefore='节点能级' defaultValue={nodeAgeControl} value={nodeAgeControl} />),
-        getItem(<Checkbox onChange={onChange}>标记节点</Checkbox>),
+    getItem('layout control', 'sub1', <SettingOutlined  />, [
+      getItem('Nodes', 'sub2', null, [
+        getItem(<Input addonBefore='Nodes Size' defaultValue={nodeSizeControl} value={nodeSizeControl} />),
+        getItem(<Input addonBefore='Nodes opacity' defaultValue={nodeOpacityControl} value={nodeOpacityControl} />),
+        getItem(<Input addonBefore='Nodes age' defaultValue={nodeAgeControl} value={nodeAgeControl} />),
+        getItem(<Checkbox onChange={onChange}>Mark Node</Checkbox>),
 
       ]),
-      getItem('边', 'sub3', null, [ 
-        getItem(<Input addonBefore='边宽度' defaultValue={edgeWidthControl} value={edgeWidthControl} />),
-        getItem(<Input addonBefore='边透明度' defaultValue={edgeOpacControl} value={edgeOpacControl} />)
+      getItem('Edge', 'sub3', null, [ 
+        getItem(<Input addonBefore='edge width' defaultValue={edgeWidthControl} value={edgeWidthControl} />),
+        getItem(<Input addonBefore='edge opacity' defaultValue={edgeOpacControl} value={edgeOpacControl} />)
       ]),
     ]),
 
-    getItem('布局属性', 'sub4', <AppstoreOutlined />, [
-      getItem(<Input addonBefore='节点总量' defaultValue={nodesNum} value={nodesNum} />),
-      getItem(<Input addonBefore='边总量' defaultValue={edgesNum} value={edgesNum} />),
-      getItem(<Input addonBefore='节点ID' defaultValue={nodeid} value={nodeid} />),
-      getItem(<Input addonBefore='节点社区' defaultValue={nodeSocial} value={nodeSocial}/>),
-      getItem(<Input addonBefore='节点能级' defaultValue={nodeAge} value={nodeAge} />),
-      getItem(<Input addonBefore='度中心性' defaultValue={degreeCenter} value={degreeCenter} />),
-      getItem(<Input addonBefore='接近中心性' defaultValue={nearCenter} value={nearCenter} />),
-      getItem(<Input addonBefore='特征向量中心性' defaultValue={nodespecial} value={nodespecial} />),
+    getItem('Nodes attr', 'sub4', <AppstoreOutlined />, [
+      getItem(<Input addonBefore='Total nodes' defaultValue={nodesNum} value={nodesNum} />),
+      getItem(<Input addonBefore='Total edges' defaultValue={edgesNum} value={edgesNum} />),
+      getItem(<Input addonBefore='Node ID' defaultValue={nodeid} value={nodeid} />),
+      getItem(<Input addonBefore='Node Social' defaultValue={nodeSocial} value={nodeSocial}/>),
+      getItem(<Input addonBefore='Node Age' defaultValue={nodeAge} value={nodeAge} />),
+      getItem(<Input addonBefore='Degree centrality' defaultValue={degreeCenter} value={degreeCenter} />),
+      getItem(<Input addonBefore='closeness centrality' defaultValue={nearCenter} value={nearCenter} />),
+      getItem(<Input addonBefore='Eigenvector centrality' defaultValue={nodespecial} value={nodespecial} />),
     ]),
   ];
 

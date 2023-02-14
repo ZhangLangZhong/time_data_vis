@@ -17,11 +17,11 @@ export default function NodeAge() {
         const option = {
             xAxis: {
                 type: 'category',
-                data: ['4.50', '4.55', '5.00', '5.05', '5.10', '5.15', '5.20']
+                data: ['step9', 'step10', 'step11', 'step12', 'step13', 'step14', 'step15','step16','step17','step18']
             },
             title: {
                 left: 'left',
-                text: '节点能级',
+                text: 'Node important',
                 textStyle:{
                     fontSize:13,
                 },
@@ -38,7 +38,7 @@ export default function NodeAge() {
             },
             series: [
                 {
-                    data: [0,0,1,1,2,2,3],
+                    data: [0.021,0.024,0.027,0.025,0.023,0.020,0.018,0.017,0.015,0.013],
                     type: 'line'
                 }
             ]

@@ -17,11 +17,11 @@ export default function NodeDegree() {
         const option = {
             xAxis: {
                 type: 'category',
-                data: ['4.50', '4.55', '5.00', '5.05', '5.10', '5.15', '5.20']
+                data: ['step9', 'step10', 'step11', 'step12', 'step13', 'step14', 'step15','step16','step17','step18']
             },
             title: {
                 left: 'left',
-                text: '节点度数',
+                text: 'centroid change',
                 textStyle:{
                     fontSize:13,
                 },
@@ -38,7 +38,7 @@ export default function NodeDegree() {
             },
             series: [
                 {
-                    data: [4, 4, 5, 5, 5, 4, 4],
+                    data: [68.35,12.54,7.56,2.16,3.49,28.34,16.59,8.54,4.35,3.29,2.51],
                     type: 'line'
                 }
             ]
