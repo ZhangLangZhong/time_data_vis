@@ -658,8 +658,11 @@ export default function DynamicChart({ FDT, NLT }) {
     function drawing(layoutNodes, width, height) {
 
         // 写在外面的
-        var a = d3.rgb(255,0,0);	//红色
-        var b = d3.rgb(144,202,235);	//绿色
+        // var a = d3.rgb(255,0,0);	//红色
+        // var b = d3.rgb(144,202,235);	//绿色
+
+        var a = d3.rgb(128,175,191)
+        var b = d3.rgb(239,175,180)
         var compute = d3.interpolate(a,b);
         // var linear = d3.scale.linear()
         var linear = d3.scaleLinear()
@@ -701,7 +704,7 @@ export default function DynamicChart({ FDT, NLT }) {
             .attr("class", "node")
             .attr("r", function(d){
                 // console.log(d.age)
-                return 5 + 0.4*(d.age-1)
+                return 3 + 0.4*(d.age-1)
             })
             .attr("cx", function (d) {
                 return d.x;
@@ -717,7 +720,7 @@ export default function DynamicChart({ FDT, NLT }) {
             })
             .attr("stroke", "gray")
             .on('click',function(d){
-                console.log(d)
+                // console.log(d)
                
                 // console.log(nowNodeSocial)
                 // PubSub.publishSync('nowsocial',)

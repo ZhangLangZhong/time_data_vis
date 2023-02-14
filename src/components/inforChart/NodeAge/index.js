@@ -39,7 +39,10 @@ export default function NodeAge() {
             series: [
                 {
                     data: [0.021,0.024,0.027,0.025,0.023,0.020,0.018,0.017,0.015,0.013],
-                    type: 'line'
+                    type: 'line',
+                    lineStyle:{
+                        color:'#80AFBF'
+                    }
                 }
             ]
         };

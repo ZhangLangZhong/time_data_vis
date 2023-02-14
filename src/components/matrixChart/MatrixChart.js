@@ -127,7 +127,8 @@ export default function MatrixChart() {
         text: ['high', 'low'],
 
         inRange: {
-          color: ['#FF9966', '#60BDCB', '#ff2121'],
+          // color: ['#FF9966', '#60BDCB', '#ff2121'],
+          color: ['#608595', '#E2C3C9'],
         },
         textStyle: {
           color: "#4B4B4B"

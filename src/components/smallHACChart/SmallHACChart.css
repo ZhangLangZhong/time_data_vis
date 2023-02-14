@@ -1,10 +1,20 @@
-.smallChart {
+/* .smallChart {
     position: absolute;
     top: 23px;
     left: 71.2%;
-    /* background-color: aquamarine; */
     height: 34.8%;
     width: 28.3%;
+    border-style: solid;
+    border: 0.1%;
+    border-color: #646464;
+} */
+
+.smallChart {
+    position: absolute;
+    top: 62%;
+    left: 47.8%;
+    height: 37.3%;
+    width: 29.5%;
     border-style: solid;
     border: 0.1%;
     border-color: #646464;
@@ -12,12 +22,12 @@
 
 .area,
 .area2 {
-    fill: #88e29e;
+    fill: #E2C3C9;
     fill-opacity: 0.5;
-    stroke: #B2DF8A;
+    stroke: #E2C3C9;
 }
 .nodeA {
-    fill: #3c1883;
+    fill: #608595;
     fill-opacity: 0.5;
     stroke: white;
     stroke-opacity: 0.8;

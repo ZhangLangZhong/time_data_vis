@@ -69,11 +69,11 @@ export default function SortedChart() {
       }
       let widthNow = max - min
 
-      let r = Math.floor(Math.random() * 80);
-      // let g = Math.round(Math.random()*255);
-      let g = Math.floor(Math.random() * 25)+120;
-      let b = Math.floor(Math.random() * 25)+150;
-      
+      let r = Math.round(Math.random() * 97 + 112);
+      let g = Math.round(Math.random() * 21 + 163);
+      let b = Math.round(Math.random() * 68 + 140);
+      let opac = Math.random() * 0.3 + 0.3
+
       // console.log(r);
       // console.log(g)
       // console.log(b)
@@ -84,7 +84,7 @@ export default function SortedChart() {
         data: [dataNow],
         width: [widthNow],
         // backgroundColor: "rgba("+r+","+g+","+b+",0.4)"
-        backgroundColor: "rgba("+r+","+g+","+b+",0.55)"
+        backgroundColor: "rgba(" + r + "," + g + "," + b + "," + opac + ")"
       }
       datasetsDATA.push(value)
     })
@@ -135,7 +135,7 @@ export default function SortedChart() {
         hashDataSets.remove(d.index)
         hashDataSets.add(d.index, value)
         datasetsDATA = hashDataSets.getValues()
-        
+
         // datasetsDATA = hashDataSets.getValues
         // console.log(datasetsDATA);
       } else {
@@ -159,15 +159,16 @@ export default function SortedChart() {
           }
         }
         let widthNow = max - min
-        let r = Math.round(Math.random()*255);
-        let g = Math.round(Math.random()*255);
-        let b = Math.round(Math.random()*255);
+        let r = Math.round(Math.random() * 97 + 112);
+      let g = Math.round(Math.random() * 21 + 163);
+      let b = Math.round(Math.random() * 68 + 140);
+      let opac = Math.random() * 0.6 + 0.3
         let value = {
           label: labelNow,
           fill: fillNow,
           data: [dataNow],
           width: [widthNow],
-          backgroundColor: "rgba("+r+","+g+","+b+",0.4)",
+          backgroundColor: "rgba(" + r + "," + g + "," + b + "," + opac + ")",
         }
         datasetsDATA.push(value)
       }
@@ -237,7 +238,7 @@ export default function SortedChart() {
           }
         });
         // revert the data for the bottom of the stripe
-        meta.data.reverse(); 
+        meta.data.reverse();
         helpers.each(meta.data, function (point, index) {
           point._view.y += (yScale.getPixelForValue(widths[index]) - yScaleZeroPixel);
         });
@@ -268,14 +269,14 @@ export default function SortedChart() {
             }
           }],
 
-          
+
 
           yAxes: [{
             ticks: {
               fontColor: "black",
               fontSize: 20,
-              min: 200,
-              max: 800
+              min: -150,
+              max: 550
             }
           }]
         }

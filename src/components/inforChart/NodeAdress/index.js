@@ -39,7 +39,10 @@ export default function NodeAdress() {
             series: [
                 {
                     data: [0.46, 0.49, 0.53,0.48, 0.59,0.42, 0.45,0.42,0.49,0.41],
-                    type: 'line'
+                    type: 'line',
+                    lineStyle:{
+                        color:'#80AFBF'
+                    }
                 }
             ]
         };

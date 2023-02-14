@@ -45,7 +45,7 @@ export default function TopInfor() {
 
     return (
         <div id='header'>
-            <span className='title'>时序数据分析可视化系统</span>
+            <span className='title'>TimeSliceVis Visualization ystem</span>
             <span className='time'>{currentTime}</span>
         </div>
         

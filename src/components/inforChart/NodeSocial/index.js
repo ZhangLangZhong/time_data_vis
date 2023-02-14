@@ -39,7 +39,10 @@ export default function NodeSocial() {
             series: [
                 {
                     data: [0.2,0.3,0.2,0.3,0.4,0.3,0.2,0.1,0.1],
-                    type: 'line'
+                    type: 'line',
+                    lineStyle:{
+                        color:'#80AFBF'
+                    }
                 }
             ]
         };

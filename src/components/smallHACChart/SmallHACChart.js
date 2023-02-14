@@ -119,8 +119,10 @@ export default function SmallHACChart() {
       }
 
       let indexFinal = unique(indexNum)
-      let center_x = HacCenterNode_X / d.List.length / 1.866
-      let center_y = HacCenterNode_Y / d.List.length / 2
+      // let center_x = HacCenterNode_X / d.List.length / 1.866
+      // let center_y = HacCenterNode_Y / d.List.length / 2
+      let center_x = HacCenterNode_X / d.List.length 
+      let center_y = HacCenterNode_Y / d.List.length
       let value = { "index": d.index, "x": center_x, "y": center_y, "indexLinks": indexFinal }
       centerNodes.push(value)
     })
