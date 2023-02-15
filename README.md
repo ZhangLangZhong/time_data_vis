@@ -30,6 +30,10 @@
 
 <h1>项目效果图</h1>
 
+<h2>vesion 2.0 </h2>
+
+![Image text](https://github.com/ZhangLangZhong/time_data_vis/blob/master/src/assets/image/V2.PNG)
+
 <h2>效果图</h2>
 
 ![Image text](https://github.com/ZhangLangZhong/time_data_vis/blob/master/src/assets/image/9.PNG)
