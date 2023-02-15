@@ -34,7 +34,7 @@
 
 ![Image text](https://github.com/ZhangLangZhong/time_data_vis/blob/master/src/assets/image/V2.PNG)
 
-<h2>效果图</h2>
+<h2>效果图version 1.0</h2>
 
 ![Image text](https://github.com/ZhangLangZhong/time_data_vis/blob/master/src/assets/image/9.PNG)
 
