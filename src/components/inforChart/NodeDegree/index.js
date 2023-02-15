@@ -38,7 +38,7 @@ export default function NodeDegree() {
             },
             series: [
                 {
-                    data: [68.35,12.54,7.56,2.16,3.49,28.34,16.59,8.54,4.35,3.29,2.51],
+                    data: [18.35,12.54,7.56,2.16,3.49,28.34,16.59,8.54,4.35,3.29,2.51],
                     type: 'line',
                     lineStyle:{
                         color:'#80AFBF'

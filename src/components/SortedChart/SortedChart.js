@@ -14,6 +14,8 @@ export default function SortedChart() {
   const [riverData, setriverData] = useState([])
   const [timeData, settimeData] = useState('')
   const [initSort, setinitSort] = useState(true)
+  const [valueNow, setvalueNow] = useState(1)
+
 
   useEffect(() => {
     console.log('         SortedChart111111111');
@@ -255,6 +257,7 @@ export default function SortedChart() {
       type: 'stripe',
       data: {
         labels: labelsDATA,
+        // labels: 111,
         datasets: datasetsDATA
       },
       options: {
