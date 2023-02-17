@@ -513,8 +513,9 @@ export default function DynamicChart({ FDT, NLT }) {
 
     function RepulsionAll(layoutNodes,width, height){
         let id_index;
-        let k = 10	,β = 0.08, t = 10;
+        let k = 200	,β = 0.08, t = 10;
         let distance_x = 1;
+        // let distance_x = 5;
         this.start = function(){
           this.repulsion();
           //  console.log([].concat(layoutNodes))
@@ -549,6 +550,7 @@ export default function DynamicChart({ FDT, NLT }) {
                                  disp_y = 1;
                              }
                              if(distance < 100){
+                            // if(distance < 300){
                                  distance_x = 1
                              }else{
                                  distance_x = 0;

@@ -278,8 +278,8 @@ export default function SortedChart() {
             ticks: {
               fontColor: "black",
               fontSize: 20,
-              min: -150,
-              max: 550
+              min: -200,
+              max: 750
             }
           }]
         }
