@@ -64,7 +64,7 @@ export default function MatrixChart() {
     // var xNames = ["2020年", "2019年", "2018年", "2017年", "2016年", "2015年","2020年", "2019年", "2018年", "2017年", "2016年", "2015年"]
     var xNames = indexXYNums
 
-    console.log(indexInfoNums);
+    // console.log(indexInfoNums);
 
     var option = {
 

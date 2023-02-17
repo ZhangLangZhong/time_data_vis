@@ -8,6 +8,8 @@ import PubSub from 'pubsub-js'
 // import '../MainLayout'
 import useSyncCallback from '../../../MyHooks/useSyncCallback';
 
+
+
 const transform = (initData) => {
     var copylinks =  initData.links.map(function (item) {
         return {source: item.source, target: item.target}
@@ -148,6 +150,8 @@ function d3layout(data, width, height) {
 
 export default function InitChart({FDT,NLT}) {
 
+    // const [startDataInit,setstartDataInit] = useState([])
+    // const [numIni,setnumIni] = useState(1)
     const [InitpreData,setInitpreData] = useState([])
 
     console.log("      InitChart");
@@ -163,7 +167,20 @@ export default function InitChart({FDT,NLT}) {
                 "end": FDT(new Date('2015-4-23 16:50'))
             }
         }).then(res=>{
+            console.log(res.data);
             let startData = transform(res.data)
+            // console.log(startData);
+
+            // console.log(numIni == 1);
+            // if(numIni == 1){
+            //     // setstartDataInit(startDataInit=>startData)
+            //     PubSub.publishSync('startDataIni',startData)
+            //     setnumIni(numIni=>2)
+            // }
+            
+            
+
+
             let getSVG = document.getElementsByClassName('mainLayout')
 
             let width = getSVG[0].clientWidth - 5
