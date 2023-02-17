@@ -68,7 +68,10 @@ def get_current_time():
 def HAC_CLUSTRING():
 
     mergeRatio = 0.002
+    # mergeRatio = 0.00002
+
     clusterCenterNumber = 28
+    # clusterCenterNumber = 5
     layoutNodesInformation = request.args.get("nodeInformation")
     perNodesInfor = request.args.get("perNodeInformation")
     jsonNodeData = pd.read_json(layoutNodesInformation,orient="records")
@@ -210,6 +213,8 @@ def HAC_CLUSTRING():
 
         if len(unsortedGroup) <= 7:
             break 
+        # if len(unsortedGroup) <= 3:
+        #     break 
 
     sortedGroup = sorted(unsortedGroup.items(), key=lambda group: group[1], reverse=True)
     topClusterCenterCount = 0
