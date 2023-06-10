@@ -513,7 +513,8 @@ export default function DynamicChart({ FDT, NLT }) {
 
     function RepulsionAll(layoutNodes,width, height){
         let id_index;
-        let k = 200	,β = 0.08, t = 10;
+        let k = 10
+        let β = 0.08, t = 10;
         let distance_x = 1;
         // let distance_x = 5;
         this.start = function(){
@@ -657,6 +658,10 @@ export default function DynamicChart({ FDT, NLT }) {
     
     }
 
+
+
+
+    
     function drawing(layoutNodes, width, height) {
 
         // 写在外面的
@@ -734,9 +739,9 @@ export default function DynamicChart({ FDT, NLT }) {
         
     }
 
-    function idToIndex(layoutNodes) {
+    function idToIndex(layoutNodesq) {
         var idIndex = {};
-        layoutNodes.forEach(function (d) {
+        layoutNodesq.forEach(function (d) {
             idIndex[d.id] = d.subs;
         })
         return idIndex;
@@ -745,7 +750,7 @@ export default function DynamicChart({ FDT, NLT }) {
     function countArray(data) {
         // console.log("countArray");
         let nodeDict = {};
-        let layoutNodes = [];
+        let layoutNodess = [];
         data.forEach(function (item) {
             if (nodeDict[item.source]) {
                 nodeDict[item.source].push(item.target)
@@ -773,10 +778,10 @@ export default function DynamicChart({ FDT, NLT }) {
             dict['degree'] = nodeDict[id].length;
             dict['x'] = Number(x);
             dict['y'] = Number(y);
-            layoutNodes.push(dict)
+            layoutNodess.push(dict)
             count++;
         })
-        return layoutNodes;
+        return layoutNodess;
     }
 
     function transform(initData) {
